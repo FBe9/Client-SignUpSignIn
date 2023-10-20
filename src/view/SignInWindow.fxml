@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInWindowController">
    <children>
-      <ImageView fitHeight="306.0" fitWidth="545.0" layoutX="354.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="310.0" fitWidth="550.0" layoutX="349.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/background.jpg" />
          </image>
@@ -25,7 +25,7 @@
             <Image url="@../resources/background.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="298.0" fitWidth="534.0" layoutX="365.0" layoutY="301.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="300.0" fitWidth="534.0" layoutX="365.0" layoutY="302.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/background.jpg" />
          </image>
@@ -41,6 +41,7 @@
          </image>
       </ImageView>
       <TextField fx:id="tfEmail" layoutX="337.0" layoutY="278.0" prefHeight="25.0" prefWidth="222.0" />
+      <PasswordField fx:id="pfPasswd" layoutX="338.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" />
       <TextField fx:id="tfPassword" layoutX="338.0" layoutY="360.0" prefHeight="25.0" prefWidth="222.0" visible="false" />
       <Label layoutX="401.0" layoutY="191.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
          <font>
@@ -62,12 +63,12 @@
             <Font name="Goudy Old Style" size="14.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="httpSignUp" layoutX="504.0" layoutY="393.0" text="Sign up.">
+      <Hyperlink fx:id="httpSignUp" layoutX="504.0" layoutY="393.0" onAction="#handelSignUpHyperlink" text="Sign up.">
          <font>
             <Font name="Goudy Old Style" size="14.0" />
          </font>
       </Hyperlink>
-      <Button fx:id="btnAccept" layoutX="416.0" layoutY="427.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #ffff;" text="Accept">
+      <Button fx:id="btnAccept" layoutX="416.0" layoutY="427.0" mnemonicParsing="false" onAction="#handelAcceptButtonAction" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #ffff;" text="Accept">
          <font>
             <Font name="Goudy Old Style" size="13.0" />
          </font></Button>
@@ -83,10 +84,9 @@
                   <Image url="@../resources/openEye.png" />
                </image>
             </ImageView>
-            <ToggleButton fx:id="tgbEye" mnemonicParsing="false" prefHeight="24.0" prefWidth="32.0" visible="false" />
+            <ToggleButton fx:id="tgbEye" mnemonicParsing="false" onAction="#handelEyeToggleButtonAction" prefHeight="24.0" prefWidth="32.0" visible="false" />
          </children>
       </StackPane>
-      <PasswordField fx:id="pfPasswd" layoutX="338.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" />
       <Text fx:id="lblError" fill="RED" layoutX="326.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unknown user, try another email or password" visible="false">
          <font>
             <Font name="Goudy Old Style" size="14.0" />
