@@ -36,7 +36,7 @@ public class Client {
     /**
      * Sends a request to the server and receives a response.
      *
-     * @param responseRequest The request to be sent to the server.
+     * @param request The request to be sent to the server.
      * @return The response received from the server.
      */
     public static ResponseRequest sendRecieveMessage(ResponseRequest request) {
