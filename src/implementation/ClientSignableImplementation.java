@@ -1,19 +1,27 @@
 package implementation;
 
+import client.Client;
 import exceptions.DatabaseErrorException;
 import exceptions.EmailExistsException;
 import exceptions.LoginCredentialException;
 import exceptions.ServerErrorException;
 import interfaces.Signable;
+import message.Message;
+import message.ResponseRequest;
 import models.User;
 
 /**
  * The ClientSignableImplementation implements the methods that are in the
  * Signable interface.
  *
- * @author Leire y Nerea (SignIn)/Irati y Olivia (SignUp)
+ * @author Leire
+ * @author Nerea
+ * @author Irati
+ * @author Olivia
  */
 public class ClientSignableImplementation implements Signable {
+
+    private Client client = new Client();
 
     /**
      * Sign up a user with the provided user information.
@@ -29,7 +37,26 @@ public class ClientSignableImplementation implements Signable {
      */
     @Override
     public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        ResponseRequest request = new ResponseRequest();
+        request.setMessage(Message.SIGNUP);
+        request.setUser(user);
+
+        ResponseRequest response = client.sendRecieveMessage(request);
+        User userResponse = null;
+        switch (request.getMessage()) {
+            case EMAIL_EXITS_ERROR:
+                throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
+            case SERVER_CAPACITY_ERROR:
+            case DATABASE_ERROR:
+            case SERVER_ERROR:
+                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            case RESPONSE_OK:
+                userResponse = response.getUser();
+                break;
+
+        }
+        return userResponse;
     }
 
     /**
