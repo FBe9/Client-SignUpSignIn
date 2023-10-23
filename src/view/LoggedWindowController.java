@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -73,6 +75,8 @@ public class LoggedWindowController {
 
         //Not a resizable window.
         stage.setResizable(false);
+
+        stage.setOnCloseRequest(this::handleOnActionExit);
 
         //Show window.
         stage.show();
@@ -154,15 +158,17 @@ public class LoggedWindowController {
      *
      * @param event The Action event object
      */
-    private void handleButtonXAction(WindowEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?");
-        Optional<ButtonType> action = alert.showAndWait();
+    public void handleOnActionExit(Event event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?",
+                ButtonType.OK, ButtonType.CANCEL);
+        Optional<ButtonType> result = alert.showAndWait();
 
-        if (action.isPresent() && action.get() == ButtonType.OK) {
-            stage.close();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Platform.exit();
         } else {
             event.consume();
         }
+
     }
 
     /**
