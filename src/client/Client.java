@@ -28,7 +28,7 @@ public class Client {
      * Static initialize for PORT and IP
      */
     static {
-        ResourceBundle config = ResourceBundle.getBundle("service.Config");
+        ResourceBundle config = ResourceBundle.getBundle("config.Config");
         PORT = Integer.parseInt(config.getString("PORT"));
         IP = config.getString("IP");
     }
