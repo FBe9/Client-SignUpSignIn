@@ -12,13 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import models.User;
 
 /**
  * FXML Controller class
  *
- * @author Leire y Nerea
+ * @author Leire
+ * @author Nerea
  */
 public class LoggedWindowController {
 
@@ -47,6 +49,8 @@ public class LoggedWindowController {
         stage.setTitle("Logged");
         //Ventana no redimensionable.
         stage.setResizable(false);
+        //
+        stage.getIcons().add(new Image("resources/blackStar.png"));
         /**
          * La ventana recibe un objeto Usuario y muestra el valor del parámetro
          * FirstName con un mensaje de bienvenida en una label.

@@ -13,13 +13,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
- * @author Irati y Olivia
+ * @author Irati
+ * @author Olivia
  */
 public class SignUpWindowController {
 
@@ -54,6 +56,8 @@ public class SignUpWindowController {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view");
+    @FXML
+    private Button btnCancel;
 
     /**
      * Initializes the controller class.
@@ -74,6 +78,8 @@ public class SignUpWindowController {
         //Deshabilita el botón sign up (btnSignUp).
         btnSignUp.setDisable(true);
         //Vaciar el contenido de todos los campos.
+        
+        stage.getIcons().add(new Image("resources/blackStar.png"));
 
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();

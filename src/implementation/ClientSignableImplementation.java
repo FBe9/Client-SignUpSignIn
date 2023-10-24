@@ -11,7 +11,10 @@ import models.User;
  * The ClientSignableImplementation implements the methods that are in the
  * Signable interface.
  *
- * @author Leire y Nerea (SignIn)/Irati y Olivia (SignUp)
+ * @author Leire
+ * @author Nerea
+ * @author Irati
+ * @author Olivia
  */
 public class ClientSignableImplementation implements Signable {
 
@@ -24,11 +27,9 @@ public class ClientSignableImplementation implements Signable {
      * sign-up process.
      * @throws EmailExistsException If the provided email address already exists
      * in the database.
-     * @throws DatabaseErrorException If there is an error with the database
-     * during user registration.
      */
     @Override
-    public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
+    public User signUp(User user) throws ServerErrorException, EmailExistsException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -41,11 +42,10 @@ public class ClientSignableImplementation implements Signable {
      * sign-in process.
      * @throws LoginCredentialException If the provided login credentials are
      * invalid.
-     * @throws DatabaseErrorException If there is an error with the database
      * during user sign-in.
      */
     @Override
-    public User signIn(User user) throws ServerErrorException, LoginCredentialException, DatabaseErrorException {
+    public User signIn(User user) throws ServerErrorException, LoginCredentialException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
