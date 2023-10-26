@@ -46,9 +46,22 @@ public class Client {
         ResponseRequest response = new ResponseRequest();
         try {
             // Receives a socket of the server
+            TimeOutThread timeOut = new TimeOutThread();
             server = new Socket(IP, PORT);
-            logger.info("Connection established with server");
-            
+            while(timeOut.isAlive()){
+                if(server.isConnected()){
+                    timeOut.interrupt();
+                }
+            }
+            if (!timeOut.isAlive() && !server.isConnected()) {
+                server.close();
+                logger.info("Connection timed-out.");
+            } else if(!timeOut.isAlive() && server.isConnected()){
+                logger.info("Connection established with server");
+            }else{
+                logger.info("Server error.");
+            }
+
             //Initialize ObjectInputStream and ObjectOutputStream
             read = new ObjectInputStream(server.getInputStream());
             write = new ObjectOutputStream(server.getOutputStream());
