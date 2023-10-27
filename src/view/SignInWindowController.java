@@ -192,14 +192,14 @@ public class SignInWindowController {
              * implementación de la interfaz “Signable”, y se llamará al método
              * “SignIn” pasándole un nuevo objeto “User” que contenga los
              * valores email y password.
-             */
-            User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = ClientFactory.getImplementation().signIn(user);
-            /**
+             * 
              * Validar que existe un usuario con el mismo email y contraseña
              * introducida en el servidor. Este devolverá un user en base a la
              * respuesta.
              */
+            User user = new User(tfEmail.getText(), pfPassword.getText());
+            User serverUser = ClientFactory.getImplementation().signIn(user);
+            
             //El ResponseRequest devolverá lo que haya ocurrido en el servidor con esa acción:
             /**
              * Si la respuesta del mensaje es OK, significará que coinciden y se
