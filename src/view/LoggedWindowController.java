@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import models.User;
 
 /**
@@ -30,13 +28,25 @@ import models.User;
  */
 public class LoggedWindowController {
 
-    private static final Logger LOGGER = Logger.getLogger("view");
+    /**
+     * Package logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger("logged view");
     private Stage stage;
 
+    /**
+     * Label for the welcome messages.
+     */
     @FXML
     private Label lblHellou;
+    /**
+     * A button to log out.
+     */
     @FXML
     private Button btnLogOut;
+    /**
+     * A button to exit.
+     */
     @FXML
     private Button btnExit;
 
@@ -54,32 +64,43 @@ public class LoggedWindowController {
      * @param user It is the user who is logged in.
      */
     public void initStage(Parent root, User user) {
-        LOGGER.info("Initializing the logged window");
+        try {
+            LOGGER.info("Initializing the logged window.");
 
-        //Tooltips
-        this.lblHellou.setTooltip(new Tooltip("Message"));
-        this.btnLogOut.setTooltip(new Tooltip("Log Out"));
-        this.btnExit.setTooltip(new Tooltip("Exit"));
+            //Tooltips
+            this.lblHellou.setTooltip(new Tooltip("Message"));
+            this.btnLogOut.setTooltip(new Tooltip("Log Out"));
+            this.btnExit.setTooltip(new Tooltip("Exit"));
 
-        lblHellou.setText("Hello " + user.getName() + " to our Application");
-        Scene scene = new Scene(root);
+            //Set the user that log in to the messages.
+            lblHellou.setText("Hello " + user.getName() + " to our Application.");
 
-        //Add scene.
-        stage.setScene(scene);
+            Scene scene = new Scene(root);
 
-        //The window title will be ”Logged”.
-        stage.setTitle("Logged");
+            //Add scene.
+            stage.setScene(scene);
 
-        //Add a star icon.
-        stage.getIcons().add(new Image("resources/blackStar.png"));
+            //The window title will be ”Logged”.
+            stage.setTitle("Logged");
 
-        //Not a resizable window.
-        stage.setResizable(false);
+            //Add a star icon.
+            stage.getIcons().add(new Image("resources/blackStar.png"));
 
-        stage.setOnCloseRequest(this::handleOnActionExit);
+            //Not a resizable window.
+            stage.setResizable(false);
 
-        //Show window.
-        stage.show();
+            //Set event handlers.
+            stage.setOnCloseRequest(this::handelExitButtonAction);
+            this.btnExit.setOnAction(this::handelExitButtonAction);
+            this.btnLogOut.setOnAction(this::handelLogOutButtonAction);
+
+            //Show window.
+            stage.show();
+        } catch (Exception e) {
+            String errorMsg = "Error opening window:\n" + e.getMessage();
+            this.showErrorAlert(errorMsg);
+            LOGGER.log(Level.SEVERE, errorMsg);
+        }
     }
 
     /*
@@ -99,24 +120,32 @@ public class LoggedWindowController {
      */
     @FXML
     private void handelLogOutButtonAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want log out?");
-        Optional<ButtonType> action = alert.showAndWait();
+        try {
+            //Ask user for confirmation on exit
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to log out?");
+            Optional<ButtonType> action = alert.showAndWait();
 
-        if (action.isPresent() && action.get() == ButtonType.OK) {
-            stage.close();
+            //If OK to exit
+            if (action.isPresent() && action.get() == ButtonType.OK) {
+                stage.close();
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInWindow.fxml"));
-                Parent root = (Parent) loader.load();
-                SignInWindowController controller = (SignInWindowController) loader.getController();
-                controller.setStage(stage);
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInWindow.fxml"));
+                    Parent root = (Parent) loader.load();
+                    SignInWindowController controller = (SignInWindowController) loader.getController();
+                    controller.setStage(stage);
 
-                controller.initStage(root);
-            } catch (IOException ex) {
-                Logger.getLogger(LoggedWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    controller.initStage(root);
+                } catch (IOException ex) {
+                    Logger.getLogger(LoggedWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                event.consume();
             }
-        } else {
-            event.consume();
+        } catch (Exception e) {
+            String errorMsg = "Error exiting application:" + e.getMessage();
+            this.showErrorAlert(errorMsg);
+            LOGGER.log(Level.SEVERE, errorMsg);
         }
     }
 
@@ -127,57 +156,59 @@ public class LoggedWindowController {
             · Si no confirma, mantenerse en la ventana.
      */
     /**
-     * This method is from the "Exit" button. It asks you for confirmation if
-     * you want to close the application. If the answer is yes, the window
-     * closes. If the answer is no, the alert confirmation is closed.
-     *
-     * @param event The Action event object
-     */
-    @FXML
-    private void handelExitButtonAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?");
-        Optional<ButtonType> action = alert.showAndWait();
-
-        if (action.isPresent() && action.get() == ButtonType.OK) {
-            stage.close();
-        } else {
-            event.consume();
-        }
-    }
-
-    /*
-    - Se cierra la ventana con el método close().
-    - Pedir confirmación al usuario para salir:
-            · Si el usuario confirma, salir de la aplicación.
-            · Si no confirma, mantenerse en la ventana.
-     */
-    /**
-     * This method is from the "X" button in the window. It asks you for
+     * This method is from the "Exit" and the "X" button. It asks you for
      * confirmation if you want to close the application. If the answer is yes,
      * the window closes. If the answer is no, the alert confirmation is closed.
      *
      * @param event The Action event object
      */
-    public void handleOnActionExit(Event event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?",
-                ButtonType.OK, ButtonType.CANCEL);
-        Optional<ButtonType> result = alert.showAndWait();
+    @FXML
+    private void handelExitButtonAction(Event event) {
+        try {
+            //Ask user for confirmation on exit
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?");
+            Optional<ButtonType> action = alert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            Platform.exit();
-        } else {
-            event.consume();
+            //If OK to exit
+            if (action.isPresent() && action.get() == ButtonType.OK) {
+                stage.close();
+            } else {
+                event.consume();
+            }
+        } catch (Exception e) {
+            String errorMsg = "Error exiting application:" + e.getMessage();
+            this.showErrorAlert(errorMsg);
+            LOGGER.log(Level.SEVERE, errorMsg);
         }
-
     }
 
+    /*
+    - Se cierra la ventana con el método close().
+    - Pedir confirmación al usuario para salir:
+            · Si el usuario confirma, salir de la aplicación.
+            · Si no confirma, mantenerse en la ventana.
+     */
     /**
-     * Return the stage
+     * Stage setter
      *
-     * @param stage
+     * @param stage The stage to set
      */
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    /**
+     * Utility method for showing messages.
+     *
+     * @param errorMsg The message to be shown.
+     */
+    protected void showErrorAlert(String errorMsg) {
+        //Shows error dialog.
+        Alert alert = new Alert(Alert.AlertType.ERROR,
+                errorMsg,
+                ButtonType.OK);
+        alert.showAndWait();
+
     }
 
 }
