@@ -183,7 +183,7 @@ public class SignInWindowController {
              * de un email, en caso contrario, informar al usuario con el
              * mensaje de la excepción “WrongEmailFormatException”.
              */
-            String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus)";
+            String patternEmail = "([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus|es|io)";
             if (!Pattern.matches(patternEmail, tfEmail.getText()) || tfEmail.getText().contains(" ")) {
                 throw new WrongEmailFormatException("Email format is not acceptable");
             }
