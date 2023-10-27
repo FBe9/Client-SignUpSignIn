@@ -32,8 +32,32 @@ public class ClientSignableImplementation implements Signable {
      * in the database.
      */
     @Override
-    public User signUp(User user) throws ServerErrorException, EmailExistsException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
+
+        ResponseRequest request = new ResponseRequest();
+        ResponseRequest response = null;
+        request.setMessage(Message.SIGNUP);
+        request.setUser(user);
+        try{
+            response = Client.sendRecieveMessage(request);
+        }catch(ServerErrorException ex){
+              throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+        }
+       
+        User userResponse = null;
+        switch (request.getMessage()) {
+            case EMAIL_EXITS_ERROR:
+                throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
+            case SERVER_CAPACITY_ERROR:
+            case DATABASE_ERROR:
+            case SERVER_ERROR:
+                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            case RESPONSE_OK:
+                userResponse = response.getUser();
+                break;
+
+        }
+        return userResponse;
     }
 
     /**

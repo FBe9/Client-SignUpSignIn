@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.util.logging.Logger;
@@ -64,8 +59,8 @@ public class SignUpWindowController {
      * @param root
      */
     public void initStage(Parent root) {
-        LOGGER.info("Inicializando la ventana de SignUp");
-        //Creas la escena
+        LOGGER.info("Initializing the sign Up Window");
+        //Creates the scene
         Scene scene = new Scene(root);
         //Le estableces la escena al escenario
         stage.setScene(scene);
@@ -78,15 +73,18 @@ public class SignUpWindowController {
         //Deshabilita el botón sign up (btnSignUp).
         btnSignUp.setDisable(true);
         //Vaciar el contenido de todos los campos.
-        
+      
         stage.getIcons().add(new Image("resources/blackStar.png"));
 
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
+        stage.getIcons().add(new Image("../resources/blackStar.png"));
+        
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    
+    
 }
