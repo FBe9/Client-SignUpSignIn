@@ -1,5 +1,6 @@
 package client;
 
+import exceptions.ServerErrorException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,28 +39,29 @@ public class Client {
      *
      * @param request The request to be sent to the server.
      * @return The response received from the server.
+     * @throws exceptions.ServerErrorException
      */
-    public static ResponseRequest sendRecieveMessage(ResponseRequest request) {
-        Socket server;
+    public static ResponseRequest sendRecieveMessage(ResponseRequest request) throws ServerErrorException {
+        Socket server = null;
         ObjectInputStream read;
         ObjectOutputStream write;
         ResponseRequest response = new ResponseRequest();
         try {
             // Receives a socket of the server
             TimeOutThread timeOut = new TimeOutThread();
+            timeOut.sleepy();
             server = new Socket(IP, PORT);
-            while(timeOut.isAlive()){
-                if(server.isConnected()){
+            while (timeOut.isAlive()) {
+                if (server.isConnected()) {
                     timeOut.interrupt();
                 }
             }
             if (!timeOut.isAlive() && !server.isConnected()) {
-                server.close();
-                logger.info("Connection timed-out.");
-            } else if(!timeOut.isAlive() && server.isConnected()){
+                throw new ServerErrorException();
+            } else if (!timeOut.isAlive() && server.isConnected()) {
                 logger.info("Connection established with server");
-            }else{
-                logger.info("Server error.");
+            } else {
+                throw new ServerErrorException();
             }
 
             //Initialize ObjectInputStream and ObjectOutputStream
@@ -75,7 +77,6 @@ public class Client {
                 //Close the ObjectInputStream, ObjectOutputStream and the socket
                 read.close();
                 write.close();
-                server.close();
                 logger.info("Connection closed");
 
             } catch (ClassNotFoundException ex) {
@@ -84,8 +85,15 @@ public class Client {
 
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServerErrorException ex) {
+           throw new ServerErrorException();
+        } finally {
+            try {
+                server.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
         return response;
     }
 }

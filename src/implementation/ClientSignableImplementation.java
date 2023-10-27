@@ -21,8 +21,6 @@ import models.User;
  */
 public class ClientSignableImplementation implements Signable {
 
-    private Client client = new Client();
-
     /**
      * Sign up a user with the provided user information.
      *
@@ -39,10 +37,15 @@ public class ClientSignableImplementation implements Signable {
     public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
 
         ResponseRequest request = new ResponseRequest();
+        ResponseRequest response = null;
         request.setMessage(Message.SIGNUP);
         request.setUser(user);
-
-        ResponseRequest response = client.sendRecieveMessage(request);
+        try{
+            response = Client.sendRecieveMessage(request);
+        }catch(ServerErrorException ex){
+              throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+        }
+       
         User userResponse = null;
         switch (request.getMessage()) {
             case EMAIL_EXITS_ERROR:
