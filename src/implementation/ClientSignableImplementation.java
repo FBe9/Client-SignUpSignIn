@@ -1,10 +1,20 @@
 package implementation;
 
+import client.Client;
 import exceptions.DatabaseErrorException;
 import exceptions.EmailExistsException;
 import exceptions.LoginCredentialException;
 import exceptions.ServerErrorException;
 import interfaces.Signable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.rmi.ServerException;
+import java.util.ResourceBundle;
+import message.Message;
+import message.ResponseRequest;
 import models.User;
 
 /**
@@ -41,12 +51,39 @@ public class ClientSignableImplementation implements Signable {
      * @throws ServerErrorException If there is a server error during the
      * sign-in process.
      * @throws LoginCredentialException If the provided login credentials are
-     * invalid.
-     * during user sign-in.
+     * invalid. during user sign-in.
      */
     @Override
     public User signIn(User user) throws ServerErrorException, LoginCredentialException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResponseRequest rr = new ResponseRequest();
+        User serverUser = null;
+        Message serverMessage;
+        
+            //Request from the Client
+            rr.setUser(user);
+            rr.setMessage(Message.SIGNIN);
+            
+            //Send the Request and recive the Response
+            ResponseRequest rrs = Client.sendRecieveMessage(rr);
+
+            //Response from the Server
+            serverMessage = rrs.getMessage();
+            switch(serverMessage){
+                //All is ok
+                case RESPONSE_OK:
+                    serverUser = rrs.getUser();
+                    break;
+                //The user does not exist
+                case CREDENTIAL_ERROR:
+                    throw new LoginCredentialException("Unknown user, plese change the login or the password.");
+                //Something happens at the server
+                case SERVER_ERROR:
+                        throw new ServerErrorException("It occurs an error at the server, plese try again later");
+            }
+
+
+        return serverUser;
+
     }
 
 }

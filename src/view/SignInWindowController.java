@@ -88,12 +88,14 @@ public class SignInWindowController {
         //El icono del ToggleButton será el del ojo abierto. 
         tgbEye.setGraphic(new ImageView(openEye));
         //El botón por defecto será el btnAccept.
-        btnAccept.defaultButtonProperty();
+        btnAccept.setDefaultButton(true);
         //El botón de cancelar será la “x” que cierra la ventana.
-        
+
         tfEmail.textProperty().addListener(this::textChanged);
         pfPassword.textProperty().addListener(this::textChanged);
         tfPassword.textProperty().addListener(this::textChanged);
+        //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
+        //tfPassword.textProperty().bindBidirectional(pfPassword.textProperty());
         stage.setOnCloseRequest(this::handleOnActionExit);
         btnAccept.setOnAction(this::handelAcceptButtonAction);
         tgbEye.setOnAction(this::handelEyeToggleButtonAction);
@@ -116,8 +118,12 @@ public class SignInWindowController {
         //El label se ubicará debajo del campo Password y mostrara el mensaje de color rojo.
         lblError.setText("");
         //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
-        tfPassword.setText(pfPassword.getText());
-        pfPassword.setText(tfPassword.getText());
+        if (pfPassword.isVisible()) {
+            tfPassword.setText(pfPassword.getText());
+        } else if (tfPassword.isVisible()) {
+            pfPassword.setText(tfPassword.getText());
+        }
+
         //Validar que el campo Email y los campos Password están informados. 
         if (tfEmail.getText().trim().isEmpty()
                 || pfPassword.getText().trim().isEmpty() || tfPassword.getText().trim().isEmpty()) {
@@ -195,26 +201,16 @@ public class SignInWindowController {
              * respuesta.
              */
             //El ResponseRequest devolverá lo que haya ocurrido en el servidor con esa acción:
-            if (serverUser.getEmail().equalsIgnoreCase(tfEmail.getText()) && serverUser.getEmail().equalsIgnoreCase(pfPassword.getText())) {
-                /**
-                 * Si la respuesta del mensaje es OK, significará que coinciden
-                 * y se cerrará la ventana. Después se abrirá la ventana Logged
-                 * pasándole los datos del objeto User devuelto.
-                 */
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/LoggedWindow.fxml"));
-                Parent root = (Parent) loader.load();
-                LoggedWindowController controller = (LoggedWindowController) loader.getController();
-                controller.setStage(stage);
-                controller.initStage(root, serverUser);
-            } else {
-                /**
-                 * Si el email o la contraseña no coinciden con un usuario
-                 * registrado, se mostrará un texto en rojo debajo del campo
-                 * Email con el mensaje de la excepción
-                 * “LoginCredentialException”.
-                 */
-                throw new LoginCredentialException("Uknown user, fix it");
-            }
+            /**
+             * Si la respuesta del mensaje es OK, significará que coinciden y se
+             * cerrará la ventana. Después se abrirá la ventana Logged pasándole
+             * los datos del objeto User devuelto.
+             */
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/LoggedWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            LoggedWindowController controller = (LoggedWindowController) loader.getController();
+            controller.setStage(stage);
+            controller.initStage(root, serverUser);
 
         } catch (IOException ex) {
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,6 +223,11 @@ public class SignInWindowController {
             new Alert(Alert.AlertType.ERROR, se.getMessage(), ButtonType.OK).showAndWait();
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, se);
         } catch (LoginCredentialException | WrongEmailFormatException e) {
+            /**
+             * Si el email o la contraseña no coinciden con un usuario
+             * registrado, se mostrará un texto en rojo debajo del campo Email
+             * con el mensaje de la excepción “LoginCredentialException”.
+             */
             lblError.setText(e.getMessage());
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
         }
