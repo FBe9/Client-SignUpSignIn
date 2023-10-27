@@ -30,8 +30,6 @@ public class ClientSignableImplementation implements Signable {
      * sign-up process.
      * @throws EmailExistsException If the provided email address already exists
      * in the database.
-     * @throws DatabaseErrorException If there is an error with the database
-     * during user registration.
      */
     @Override
     public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
@@ -70,13 +68,39 @@ public class ClientSignableImplementation implements Signable {
      * @throws ServerErrorException If there is a server error during the
      * sign-in process.
      * @throws LoginCredentialException If the provided login credentials are
-     * invalid.
-     * @throws DatabaseErrorException If there is an error with the database
-     * during user sign-in.
+     * invalid. during user sign-in.
      */
     @Override
-    public User signIn(User user) throws ServerErrorException, LoginCredentialException, DatabaseErrorException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User signIn(User user) throws ServerErrorException, LoginCredentialException {
+        ResponseRequest rr = new ResponseRequest();
+        User serverUser = null;
+        Message serverMessage;
+        
+            //Request from the Client
+            rr.setUser(user);
+            rr.setMessage(Message.SIGNIN);
+            
+            //Send the Request and recive the Response
+            ResponseRequest rrs = Client.sendRecieveMessage(rr);
+
+            //Response from the Server
+            serverMessage = rrs.getMessage();
+            switch(serverMessage){
+                //All is ok
+                case RESPONSE_OK:
+                    serverUser = rrs.getUser();
+                    break;
+                //The user does not exist
+                case CREDENTIAL_ERROR:
+                    throw new LoginCredentialException("Unknown user, plese change the login or the password.");
+                //Something happens at the server
+                case SERVER_ERROR:
+                        throw new ServerErrorException("It occurs an error at the server, plese try again later");
+            }
+
+
+        return serverUser;
+
     }
 
 }

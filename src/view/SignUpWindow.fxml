@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #f3efe4;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #f3efe4;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpWindowController">
    <children>
       <ImageView fx:id="imgStar" fitHeight="65.0" fitWidth="68.0" layoutX="803.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -117,7 +117,7 @@
       </Button>
       <ImageView fitHeight="27.0" fitWidth="51.0" layoutX="1067.0" layoutY="349.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resources/openEye.png"/>
+            <Image url="@../resources/eyeB.png"/>
          </image>
       </ImageView>
    </children>

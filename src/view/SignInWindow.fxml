@@ -9,9 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInWindowController">
    <children>
@@ -40,57 +38,47 @@
             <Image url="@../resources/blackStar.png" />
          </image>
       </ImageView>
-      <TextField fx:id="tfEmail" layoutX="337.0" layoutY="278.0" prefHeight="25.0" prefWidth="222.0" />
-      <PasswordField fx:id="pfPasswd" layoutX="338.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" />
-      <TextField fx:id="tfPassword" layoutX="338.0" layoutY="360.0" prefHeight="25.0" prefWidth="222.0" visible="false" />
-      <Label layoutX="401.0" layoutY="191.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
+      <TextField fx:id="tfEmail" layoutX="342.0" layoutY="276.0" prefHeight="25.0" prefWidth="222.0" />
+      <PasswordField fx:id="pfPassword" layoutX="344.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" />
+      <TextField fx:id="tfPassword" layoutX="344.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" visible="false" />
+      <Label layoutX="403.0" layoutY="189.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="427.0" layoutY="250.0" text="Email" textFill="WHITE">
+      <Label layoutX="432.0" layoutY="251.0" text="Email" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="416.0" layoutY="316.0" text="Password" textFill="WHITE">
+      <Label layoutX="421.0" layoutY="317.0" text="Password" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="344.0" layoutY="397.0" text="You do not have an account? " textFill="WHITE">
+      <Label layoutX="352.0" layoutY="415.0" text="You do not have an account? " textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="14.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="httpSignUp" layoutX="504.0" layoutY="393.0" onAction="#handelSignUpHyperlink" text="Sign up.">
+      <Hyperlink fx:id="httpSignUp" layoutX="512.0" layoutY="411.0" onAction="#handelSignUpHyperlink" text="Sign up.">
          <font>
             <Font name="Goudy Old Style" size="14.0" />
          </font>
       </Hyperlink>
-      <Button fx:id="btnAccept" layoutX="416.0" layoutY="427.0" mnemonicParsing="false" onAction="#handelAcceptButtonAction" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #ffff;" text="Accept">
+      <Button fx:id="btnAccept" layoutX="415.0" layoutY="441.0" mnemonicParsing="false" onAction="#handelAcceptButtonAction" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #ffff;" text="Accept">
          <font>
             <Font name="Goudy Old Style" size="13.0" />
          </font></Button>
-      <ImageView fitHeight="85.0" fitWidth="42.0" layoutX="434.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="85.0" fitWidth="42.0" layoutX="432.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/person.png" />
          </image>
       </ImageView>
-      <StackPane layoutX="549.0" layoutY="329.0" prefHeight="51.0" prefWidth="65.0">
-         <children>
-            <ImageView fx:id="imgEye" fitHeight="32.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/openEye.png" />
-               </image>
-            </ImageView>
-            <ToggleButton fx:id="tgbEye" mnemonicParsing="false" onAction="#handelEyeToggleButtonAction" prefHeight="24.0" prefWidth="32.0" visible="false" />
-         </children>
-      </StackPane>
-      <Text fx:id="lblError" fill="RED" layoutX="326.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unknown user, try another email or password" visible="false">
+      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="373.0" prefHeight="34.0" prefWidth="295.0" textAlignment="CENTER" textFill="RED">
          <font>
-            <Font name="Goudy Old Style" size="14.0" />
-         </font>
-      </Text>
+            <Font name="Goudy Old Style" size="13.0" />
+         </font></Label>
+      <ToggleButton fx:id="tgbEye" layoutX="567.0" layoutY="340.0" mnemonicParsing="false" onAction="#handelEyeToggleButtonAction" prefHeight="24.0" prefWidth="32.0" style="-fx-background-color: transparent;" />
    </children>
 </Pane>

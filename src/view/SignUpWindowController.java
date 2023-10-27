@@ -51,6 +51,8 @@ public class SignUpWindowController {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view");
+    @FXML
+    private Button btnCancel;
 
     /**
      * Initializes the controller class.
@@ -71,6 +73,9 @@ public class SignUpWindowController {
         //Deshabilita el botón sign up (btnSignUp).
         btnSignUp.setDisable(true);
         //Vaciar el contenido de todos los campos.
+      
+        stage.getIcons().add(new Image("resources/blackStar.png"));
+
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
         stage.getIcons().add(new Image("../resources/blackStar.png"));
