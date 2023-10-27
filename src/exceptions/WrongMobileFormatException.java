@@ -7,7 +7,7 @@ package exceptions;
 
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
 public class WrongMobileFormatException extends Exception {
 
