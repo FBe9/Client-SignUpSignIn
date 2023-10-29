@@ -130,8 +130,8 @@ public class SignUpWindowController {
         //  stage.initModality(Modality.APPLICATION_MODAL);
         //Se muestra la ventana con un show and wait.
         // stage.showAndWait();
-        openEye = new Image("resources/openEyeBlack.png", 25, 26, false, true);
-        closeEye = new Image("resources/closeEyeBlack.png", 25, 26, false, true);
+        openEye = new Image("resources/eyeB.png", 25, 26, false, true);
+        closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
         //El icono del ToggleButton será el del ojo abierto. 
         tgbEye.setGraphic(new ImageView(openEye));
@@ -236,7 +236,7 @@ public class SignUpWindowController {
             }
 
             //Validar que el campo del email (tfEmail) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
-            if (!tfEmail.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            if (!tfEmail.getText().matches("([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus|es|io)")) {
                 throw new WrongEmailFormatException("The email must have a valid format");
             } else if (lblWrongEmail.isVisible()) {
                 lblWrongEmail.setVisible(false);
@@ -254,7 +254,7 @@ public class SignUpWindowController {
             }
 
             //Validar que el campo del teléfono (tfMobile) empiece por 6 o 7, si no, lanzaremos la excepción “WrongMobileFormatException”.
-            if (!tfMobile.getText().matches("[67]\\d*")) {
+            if (!tfMobile.getText().matches("[67]\\d{8}")) {
                 throw new WrongMobileFormatException("The phone number must start with 6 or 7 and can only contain numbers.");
             } else if (lblWrongMobile.isVisible()) {
                 lblWrongMobile.setVisible(false);

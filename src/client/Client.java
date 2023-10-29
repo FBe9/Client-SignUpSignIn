@@ -86,10 +86,13 @@ public class Client {
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ServerErrorException ex) {
-           throw new ServerErrorException();
+            throw new ServerErrorException();
         } finally {
             try {
-                server.close();
+                if (server != null) {
+                    server.close();
+                }
+
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
