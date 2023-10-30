@@ -258,7 +258,7 @@ public class SignInWindowController {
         try {
             //Ask user for confirmation on exit
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "¿Are you sure you want to exit the application?",
+                    "Are you sure you want to exit the application?",
                     ButtonType.OK, ButtonType.CANCEL);
             Optional<ButtonType> result = alert.showAndWait();
             //If OK to exit
