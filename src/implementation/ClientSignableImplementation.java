@@ -50,9 +50,10 @@ public class ClientSignableImplementation implements Signable {
                 case EMAIL_EXITS_ERROR:
                     throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
                 case SERVER_CAPACITY_ERROR:
-                case DATABASE_ERROR:
-                case SERVER_ERROR:
+                     case SERVER_ERROR:
                     throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+                case DATABASE_ERROR:
+                     throw new ServerErrorException("Internal Server Error: We're experiencing technical with the database. Please try again later or contact our support team for assistance.");
                 case RESPONSE_OK:
                     userResponse = response.getUser();
                     break;

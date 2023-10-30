@@ -140,7 +140,6 @@ public class SignUpWindowController {
         stage.initModality(Modality.APPLICATION_MODAL);
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
-        
         openEye = new Image("resources/eyeB.png", 25, 26, false, true);
         closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
@@ -302,12 +301,15 @@ public class SignUpWindowController {
                     stage.close();
                 }
 
-            } catch (ServerErrorException | DatabaseErrorException ex) {
+            } catch (ServerErrorException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
                 Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EmailExistsException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
                 Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DatabaseErrorException ex) {
+                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+                Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (WrongNameFormatException ex) {
