@@ -13,7 +13,6 @@ import exceptions.WrongMobileFormatException;
 import exceptions.WrongNameFormatException;
 import exceptions.WrongPasswordFormatException;
 import factory.ClientFactory;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,21 +125,36 @@ public class SignUpWindowController {
         //Deshabilita el botón sign up (btnSignUp).
         btnSignUp.setDisable(true);
         //Vaciar el contenido de todos los campos.
+        tfCity.setText("");
+        pfConfirmPassword.setText("");
+        pfPassword.setText("");
+        tfEmail.setText("");
+        tfFirstName.setText("");
+        tfLastName.setText("");
+        tfMobile.setText("");
+        tfConfirmPassword.setText("");
+        tfPassword.setText("");
+        tfStreet.setText("");
+        tfZip.setText("");
         //Ventana modal
-        //  stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL);
         //Se muestra la ventana con un show and wait.
-        // stage.showAndWait();
+        stage.showAndWait();
+        
         openEye = new Image("resources/eyeB.png", 25, 26, false, true);
         closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
         //El icono del ToggleButton será el del ojo abierto. 
         tgbEye.setGraphic(new ImageView(openEye));
-        //stage.showAndWait();
         stage.show();
-        // stage.getIcons().add(new Image("../resources/blackStar.png"));
+        stage.getIcons().add(new Image("resources/blackStar.png"));
 
+        //El botón signUp es el botón por defecto.
         btnSignUp.setDefaultButton(true);
+        //El botón Cancel es el botón de escape.
         btnCancel.setCancelButton(true);
+
+        //Asignar Actions y Listeners
         btnSignUp.setOnAction(this::handlerSignUpButton);
         tgbEye.setOnAction(this::handlertgbEye);
         stage.setOnCloseRequest(this::handleOnActionExit);
@@ -171,13 +185,13 @@ public class SignUpWindowController {
             btnSignUp.setDisable(true);
         }
         //El texto del “pfPassword” se copiará en “tfPassword” y viceversa. Y el texto del “pfConfirmPassword” se copiará en el “tfConfirmPassword” y viceversa.
-        if (pfPassword.isVisible()) {
+        if (pfPassword.isVisible() && !pfPassword.equals(tfPassword)) {
             tfPassword.setText(pfPassword.getText());
         } else if (tfPassword.isVisible()) {
             pfPassword.setText(tfPassword.getText());
         }
 
-        if (pfConfirmPassword.isVisible()) {
+        if (pfConfirmPassword.isVisible() && !pfConfirmPassword.equals(tfConfirmPassword)) {
             tfConfirmPassword.setText(pfConfirmPassword.getText());
         } else if (tfCity.isVisible()) {
             pfConfirmPassword.setText(tfConfirmPassword.getText());
@@ -195,6 +209,7 @@ public class SignUpWindowController {
         } else {
             lblWrongPasswordMax.setVisible(false);
         }
+
         //Validar que el campo teléfono (tfMobile) contenga un máximo de 9 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
         if (tfMobile.getText().trim().length() > MAX_LENGHT_MOBILE) {
             lblWrongMobileMax.setVisible(true);
@@ -206,12 +221,17 @@ public class SignUpWindowController {
     @FXML
     private void handlertgbEye(ActionEvent event) {
         ImageView currentImage = (ImageView) tgbEye.getGraphic();
+        //Si está pulsado, los PasswordField “pfPassword” y “pfConfirmPassword” se volverán invisibles y los TextField “tfPassword” 
+        // y “tfConfirmPassword” se volverán visibles.  El icono del ToggleButton cambiará a un ojo tachado.
+
         if (currentImage.getImage() == openEye) {
             tgbEye.setGraphic(new ImageView(closeEye));
             pfConfirmPassword.setVisible(false);
             pfPassword.setVisible(false);
             tfPassword.setVisible(true);
             tfConfirmPassword.setVisible(true);
+            //Si no está pulsado,  los PasswordField “pfPassword” y “pfConfirmPassword” se volverán visibles y los TextField “tfPassword” 
+            //y “tfConfirmPassword” se volverán invisibles.  El icono del ToggleButton cambiará a un ojo abierto.
 
         } else {
             tgbEye.setGraphic(new ImageView(openEye));
@@ -279,13 +299,15 @@ public class SignUpWindowController {
                 User userResponse = ClientFactory.getImplementation().signUp(user);
 
                 if (userResponse != null) {
-                    new Alert(Alert.AlertType.INFORMATION, "Registration successful.", ButtonType.OK).showAndWait();
+                    stage.close();
                 }
 
             } catch (ServerErrorException | DatabaseErrorException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+                Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EmailExistsException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+                Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } catch (WrongNameFormatException ex) {
@@ -322,7 +344,7 @@ public class SignUpWindowController {
         } catch (Exception e) {
             String errorMsg = "Error exiting application:" + e.getMessage();
             new Alert(Alert.AlertType.ERROR, errorMsg, ButtonType.OK).showAndWait();
-            LOGGER.log(Level.SEVERE, errorMsg);
+
         }
 
     }
