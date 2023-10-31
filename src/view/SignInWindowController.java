@@ -25,105 +25,120 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import models.User;
 
 /**
- * FXML Controller class
+ * FXML Controller class. It controlls what the signIn window components do. It
+ * is the controller from the SignInWindow.fxml.
  *
  * @author Leire
  * @author Nerea
  */
 public class SignInWindowController {
 
+    //Text Fields
     @FXML
     private TextField tfEmail;
     @FXML
-    private Hyperlink httpSignUp;
+    private TextField tfPassword;
+    //Password Fields
+    @FXML
+    private PasswordField pfPassword;
+    //Error Labels
+    @FXML
+    private Label lblError;
+    @FXML
+    private Label lblEmailError;
+    //Buttons
     @FXML
     private Button btnAccept;
     @FXML
     private ToggleButton tgbEye;
+    //Hyperlink
     @FXML
-    private Label lblError;
+    private Hyperlink httpSignUp;
+    //Pane
     @FXML
-    private PasswordField pfPassword;
-    @FXML
-    private TextField tfPassword;
-
-    // private static String visible;
+    private Pane signInPane;
+    //Stage
     private Stage stage;
+    //Logger
     private static final Logger LOGGER = Logger.getLogger("package view");
+    //Images
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
 
     /**
-     * Initializes the controller class.
+     * Initializes the window before showing, and then shows the window.
      *
-     * @param root
+     * @param root a Parent object with the DOM.
      */
     public void initStage(Parent root) {
-        LOGGER.info("Inicializando la ventana de SignIn");
-        //Creas la escena
-        Scene scene = new Scene(root);
-        //Le estableces la escena al escenario
-        stage.setScene(scene);
-        //El nombre de la ventana es “Sign In”.
-        stage.setTitle("SignIn");
-        //Ventana no modal.
-        //Añadir a la ventana un icono de una estrella.
-        stage.getIcons().add(new Image("resources/blackStar.png"));
-        //Ventana no redimensionable.
-        stage.setResizable(false);
-        //Se vacían los campos email y ambos password.
-        tfEmail.setText("");
-        pfPassword.setText("");
-        tfPassword.setText("");
-        //Se enfoca el campo Email.
-        tfEmail.requestFocus();
-        //Se deshabilita el botón Accept.
-        btnAccept.setDisable(true);
-        //Todos los elementos están vacíos al inicializar la ventana.
-        lblError.setText("");
-        //El icono del ToggleButton será el del ojo abierto. 
-        tgbEye.setGraphic(new ImageView(openEye));
-        //El botón por defecto será el btnAccept.
-        btnAccept.setDefaultButton(true);
-        //El botón de cancelar será la “x” que cierra la ventana.
+        try {
+            LOGGER.info("Initialiceing SignIn window");
+            //Creas la escena
+            Scene scene = new Scene(root);
+            //Le estableces la escena al escenario
+            stage.setScene(scene);
+            //El nombre de la ventana es “Sign In”.
+            stage.setTitle("SignIn");
+            //Ventana no modal.
+            //Añadir a la ventana un icono de una estrella.
+            stage.getIcons().add(new Image("resources/blackStar.png"));
+            //Ventana no redimensionable.
+            stage.setResizable(false);
+            //Se vacían los campos email y ambos password.
+            tfEmail.setText("");
+            pfPassword.setText("");
+            tfPassword.setText("");
+            //Se enfoca el campo Email.
+            tfEmail.requestFocus();
+            //Se deshabilita el botón Accept.
+            btnAccept.setDisable(true);
+            //El icono del ToggleButton será el del ojo abierto. 
+            tgbEye.setGraphic(new ImageView(openEye));
+            //El botón por defecto será el btnAccept.
+            btnAccept.setDefaultButton(true);
+            tfEmail.textProperty().addListener(this::textChanged);
+            pfPassword.textProperty().addListener(this::textChanged);
+            tfPassword.textProperty().addListener(this::textChanged);
+            //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
+            //tfPassword.textProperty().bindBidirectional(pfPassword.textProperty());
+            stage.setOnCloseRequest(this::handleOnActionExit);
+            btnAccept.setOnAction(this::handelAcceptButtonAction);
+            tgbEye.setOnAction(this::handelEyeToggleButtonAction);
+            httpSignUp.setOnAction(this::handelSignUpHyperlink);
+            //Mostrar la ventana. 
+            stage.show();
+            LOGGER.info("Showing the SignIn window");
+        } catch (Exception e) {
+            String errorMsg = "Error opening window:\n" + e.getMessage();
+            LOGGER.log(Level.SEVERE, errorMsg);
+        }
 
-        tfEmail.textProperty().addListener(this::textChanged);
-        pfPassword.textProperty().addListener(this::textChanged);
-        tfPassword.textProperty().addListener(this::textChanged);
-        //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
-        //tfPassword.textProperty().bindBidirectional(pfPassword.textProperty());
-        stage.setOnCloseRequest(this::handleOnActionExit);
-        btnAccept.setOnAction(this::handelAcceptButtonAction);
-        tgbEye.setOnAction(this::handelEyeToggleButtonAction);
-        httpSignUp.setOnAction(this::handelSignUpHyperlink);
-
-        //Mostrar la ventana. 
-        stage.show();
     }
 
     /**
      * Text changed event handler. Validate that all the fields are not empty
-     * and that Email not surpass 40 characters and Passwords 300 characters.
+     * and that Email and Passwords not surpass 300 characters.
      * The Accept button is disabled when one of all fields are empty.
      *
      * @param observable The value being observed.
      * @param oldValue The old value of the observable.
      * @param newValue The new value of the observable.
      */
-    private void textChanged(ObservableValue observable, String oldValue, String newValue) {
+    public void textChanged(ObservableValue observable, String oldValue, String newValue) {
         //El label se ubicará debajo del campo Password y mostrara el mensaje de color rojo.
         lblError.setText("");
-        //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
-        if (pfPassword.isVisible()) {
+        lblEmailError.setText("");
+        //Se comprobara cual de los campos passwords es visible y se copiara el texto del visible en el invisible en caso de que no tengan el mismo texto.
+        if (pfPassword.isVisible() && !(pfPassword.getText().equals(tfPassword.getText()))) {
             tfPassword.setText(pfPassword.getText());
-        } else if (tfPassword.isVisible()) {
+        } else if (tfPassword.isVisible() && !(tfPassword.getText().equals(pfPassword.getText()))) {
             pfPassword.setText(tfPassword.getText());
         }
-
         //Validar que el campo Email y los campos Password están informados. 
         if (tfEmail.getText().trim().isEmpty()
                 || pfPassword.getText().trim().isEmpty() || tfPassword.getText().trim().isEmpty()) {
@@ -139,15 +154,20 @@ public class SignInWindowController {
          * que el límite de caracteres sea menor o igual al correspondiente.
          */
         if (tfEmail.getText().trim().length() > 300) {
-            lblError.setText("The maximum lenght for the Email is 300 characters,\n please change it.");
+            lblEmailError.setText("The maximum lenght for the Email is 300 characters,\n please change it.");
         }
         if (tfPassword.getText().trim().length() > 300 || pfPassword.getText().trim().length() > 300) {
             lblError.setText("The maximum lenght for the Password is 300\ncharacters, please change it.");
         }
     }
 
+    /**
+     * It handel when it happens an acction with the toggle button tgbEye.
+     * 
+     * @param event the event that happens with the toggle button.
+     */
     @FXML
-    private void handelEyeToggleButtonAction(ActionEvent event) {
+    public void handelEyeToggleButtonAction(ActionEvent event) {
         LOGGER.info("Handeling the eye toggle button");
         //Comprobar el estado del botón:
         if (tgbEye.isSelected()) {
@@ -174,8 +194,13 @@ public class SignInWindowController {
         }
     }
 
+    /**
+     * It handel what happens when you click in the button btnAccept.
+     * 
+     * @param event  the event that happens with the  button
+     */
     @FXML
-    private void handelAcceptButtonAction(ActionEvent event) {
+    public void handelAcceptButtonAction(ActionEvent event) {
         try {
             LOGGER.info("Handeling the accept button");
             /**
@@ -192,19 +217,14 @@ public class SignInWindowController {
              * implementación de la interfaz “Signable”, y se llamará al método
              * “SignIn” pasándole un nuevo objeto “User” que contenga los
              * valores email y password.
-             * 
-             * Validar que existe un usuario con el mismo email y contraseña
-             * introducida en el servidor. Este devolverá un user en base a la
-             * respuesta.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
             User serverUser = ClientFactory.getImplementation().signIn(user);
-            
-            //El ResponseRequest devolverá lo que haya ocurrido en el servidor con esa acción:
+
             /**
-             * Si la respuesta del mensaje es OK, significará que coinciden y se
-             * cerrará la ventana. Después se abrirá la ventana Logged pasándole
-             * los datos del objeto User devuelto.
+             * Si el metodo signIn no produce excepciones, se cerrará la ventana
+             * y después se abrirá la ventana Logged pasándole los datos del
+             * objeto User devuelto.
              */
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/LoggedWindow.fxml"));
             Parent root = (Parent) loader.load();
@@ -222,19 +242,26 @@ public class SignInWindowController {
              */
             new Alert(Alert.AlertType.ERROR, se.getMessage(), ButtonType.OK).showAndWait();
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, se);
-        } catch (LoginCredentialException | WrongEmailFormatException e) {
             /**
              * Si el email o la contraseña no coinciden con un usuario
              * registrado, se mostrará un texto en rojo debajo del campo Email
              * con el mensaje de la excepción “LoginCredentialException”.
              */
-            lblError.setText(e.getMessage());
+        } catch (LoginCredentialException l) {
+            lblError.setText(l.getMessage());
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, l);
+        } catch (WrongEmailFormatException e) {
+            lblEmailError.setText(e.getMessage());
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-
+    /**
+     * It handel what happens when you clic in the hyperlink httpSignUp. 
+     * 
+     * @param event 
+     */
     @FXML
-    private void handelSignUpHyperlink(ActionEvent event) {
+    public void handelSignUpHyperlink(ActionEvent event) {
         try {
             //Se abrirá la ventana Sign Up de manera modal.
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignUpWindow.fxml"));
@@ -258,7 +285,7 @@ public class SignInWindowController {
         try {
             //Ask user for confirmation on exit
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "¿Are you sure you want to exit the application?",
+                    "Are you sure you want to exit the application?",
                     ButtonType.OK, ButtonType.CANCEL);
             Optional<ButtonType> result = alert.showAndWait();
             //If OK to exit
