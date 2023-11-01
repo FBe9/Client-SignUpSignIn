@@ -50,9 +50,10 @@ public class ClientSignableImplementation implements Signable {
                 case EMAIL_EXITS_ERROR:
                     throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
                 case SERVER_CAPACITY_ERROR:
-                case DATABASE_ERROR:
                 case SERVER_ERROR:
                     throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+                case DATABASE_ERROR:
+                    throw new ServerErrorException("Internal Server Error: We're experiencing technical with the database. Please try again later or contact our support team for assistance.");
                 case RESPONSE_OK:
                     userResponse = response.getUser();
                     break;
@@ -78,30 +79,35 @@ public class ClientSignableImplementation implements Signable {
         ResponseRequest rr = new ResponseRequest();
         User serverUser = null;
         Message serverMessage;
-
+        ResponseRequest rrs = null;
         //Request from the Client
         rr.setUser(user);
         rr.setMessage(Message.SIGNIN);
 
         //Send the Request and recive the Response
-        ResponseRequest rrs = Client.sendRecieveMessage(rr);
+        try {
+            rrs = Client.sendRecieveMessage(rr);
+        } catch (ServerErrorException ex) {
+            throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+        }
 
         //Response from the Server
         serverMessage = rrs.getMessage();
-        switch (serverMessage) {
-            //All is ok
-            case RESPONSE_OK:
-                serverUser = rrs.getUser();
-                break;
-            //The user does not exist
-            case CREDENTIAL_ERROR:
-                throw new LoginCredentialException("Unknown user, plese change the login or the password.");
-            //Something happens at the server
-            case SERVER_ERROR:
-                throw new ServerErrorException("It occurs an error at the server, plese try again later");
+        if (serverMessage != null) {
+            switch (serverMessage) {
+                //All is ok
+                case RESPONSE_OK:
+                    serverUser = rrs.getUser();
+                    break;
+                //The user does not exist
+                case CREDENTIAL_ERROR:
+                    throw new LoginCredentialException("Unknown user, plese change the login or the password.");
+                //Something happens at the server
+                case SERVER_ERROR:
+                    throw new ServerErrorException("It occurs an error at the server, plese try again later");
+            }
         }
-
-
+        
         return serverUser;
 
     }
