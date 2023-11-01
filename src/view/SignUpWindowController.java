@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import exceptions.DatabaseErrorException;
@@ -102,8 +97,8 @@ public class SignUpWindowController {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view");
-    protected final int MAX_LENGHT = 300;
-    protected final int MAX_LENGHT_MOBILE = 9;
+    protected final int MAX_LENGTH = 300;
+    protected final int MAX_LENGTH_MOBILE = 9;
 
     /**
      * Initializes the controller class.
@@ -138,14 +133,12 @@ public class SignUpWindowController {
         tfZip.setText("");
         //Ventana modal
         stage.initModality(Modality.APPLICATION_MODAL);
-        //Se muestra la ventana con un show and wait.
-        stage.showAndWait();
+
         openEye = new Image("resources/eyeB.png", 25, 26, false, true);
         closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
         //El icono del ToggleButton será el del ojo abierto. 
         tgbEye.setGraphic(new ImageView(openEye));
-        stage.show();
         stage.getIcons().add(new Image("resources/blackStar.png"));
 
         //El botón signUp es el botón por defecto.
@@ -167,6 +160,8 @@ public class SignUpWindowController {
         pfConfirmPassword.textProperty().addListener(this::textPropertyChange);
         tfMobile.textProperty().addListener(this::textPropertyChange);
 
+        //Se muestra la ventana con un show and wait.
+        stage.showAndWait();
     }
 
     public void setStage(Stage stage) {
@@ -177,8 +172,9 @@ public class SignUpWindowController {
             String oldValue,
             String newValue) {
         //Validar que los campos full name, email, password, confirm password están informados
-        if (!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmail.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
-                && !pfPassword.getText().trim().equals("")) {
+        if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmail.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
+                && !pfPassword.getText().trim().equals("")) || (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
+                && !lblWrongEmailMax.isVisible() && !lblWrongEmailMax.isVisible() && !lblWrongMobile.isVisible())) {
             btnSignUp.setDisable(false);
         } else {
             btnSignUp.setDisable(true);
@@ -197,20 +193,20 @@ public class SignUpWindowController {
         }
 
         //Validar que tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
-        if (tfEmail.getText().trim().length() > MAX_LENGHT) {
+        if (tfEmail.getText().trim().length() > MAX_LENGTH) {
             lblWrongEmailMax.setVisible(true);
         } else {
             lblWrongEmailMax.setVisible(false);
         }
 
-        if (tfPassword.getText().trim().length() > MAX_LENGHT || tfConfirmPassword.getText().trim().length() > MAX_LENGHT || pfConfirmPassword.getText().trim().length() > MAX_LENGHT || pfPassword.getText().trim().length() > MAX_LENGHT) {
+        if (tfPassword.getText().trim().length() > MAX_LENGTH || tfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfPassword.getText().trim().length() > MAX_LENGTH) {
             lblWrongPasswordMax.setVisible(true);
         } else {
             lblWrongPasswordMax.setVisible(false);
         }
 
         //Validar que el campo teléfono (tfMobile) contenga un máximo de 9 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
-        if (tfMobile.getText().trim().length() > MAX_LENGHT_MOBILE) {
+        if (tfMobile.getText().trim().length() > MAX_LENGTH_MOBILE) {
             lblWrongMobileMax.setVisible(true);
         } else {
             lblWrongMobileMax.setVisible(false);
@@ -247,54 +243,95 @@ public class SignUpWindowController {
         try {
             // Validar que el campo de nombre (tfFirstName) y el de apellido (tfLastName) no contengan valores numéricos, si no, lanzaremos la excepción “WrongNameFormatException”.
             if (!tfFirstName.getText().matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$") || !tfLastName.getText().matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$")) {
-                throw new WrongNameFormatException("The name can't contain numbers.");
+                throw new WrongNameFormatException("The name or last name cannot contain numbers.");
             } else if (lblWrongName.isVisible()) {
                 lblWrongName.setVisible(false);
                 lblWrongName.setText("");
 
             }
+        } catch (WrongNameFormatException ex) {
+            lblWrongName.setText(ex.getMessage());
+            lblWrongName.setVisible(true);
+        }
+        try {
 
             //Validar que el campo del email (tfEmail) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
-            if (!tfEmail.getText().matches("([a-z0-9]*)@([a-z]*).(com|org|cn|net|gov|eus|es|io)")) {
-                throw new WrongEmailFormatException("The email must have a valid format");
+            if (!tfEmail.getText().matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$")) {
+                throw new WrongEmailFormatException("The email must have a valid format.");
             } else if (lblWrongEmail.isVisible()) {
                 lblWrongEmail.setVisible(false);
                 lblWrongEmail.setText("");
             }
+        } catch (WrongEmailFormatException ex) {
+            lblWrongEmail.setText(ex.getMessage());
+            lblWrongEmail.setVisible(true);
+        }
 
+        try {
             //Validar que ambos campos de las contraseñas (pfPassword y pfConfirmPassword) contengan la misma información y contengan mínimo 8 caracteres, de los cuales mínimo 1 mayúscula, 1 minuscula, y al menos 1 caracter especial, si no, lanzaremos la excepción “WrongPasswordFormatException”.
-            if (!pfConfirmPassword.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\W).{8,}$") && !pfPassword.getText().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\W).{8,}$")) {
-                throw new WrongPasswordFormatException("The password doesn't much with the required format");
-            } else if (!pfConfirmPassword.getText().equals(pfPassword.getText())) {
-                throw new WrongPasswordFormatException("The passwords do not match.");
+            if (!pfConfirmPassword.getText().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$") || !pfPassword.getText().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$")) {
+
+                throw new WrongPasswordFormatException("Password doesn't match with required format");
             } else {
                 lblWrongPassword.setVisible(false);
                 lblWrongPassword.setText("");
             }
+        } catch (WrongPasswordFormatException ex) {
+            lblWrongPassword.setText(ex.getMessage());
+            lblWrongPassword.setVisible(true);
+        }
+        try {
+            if (!pfConfirmPassword.getText().equals(pfPassword.getText())) {
+                throw new WrongPasswordFormatException("he passwords don't match.");
+            } else {
+                if (lblWrongPassword.getText().isEmpty()) {
+                    lblWrongPassword.setVisible(false);
+                    lblWrongPassword.setText("");
+                } else {
+                    lblWrongPassword.setText(lblWrongPassword.getText() + ".");
+                }
+            }
+        } catch (WrongPasswordFormatException ex) {
+            if (lblWrongPassword.getText().isEmpty()) {
+                lblWrongPassword.setText("T" + ex.getMessage());
+            } else if (lblWrongPassword.getText().equals("Password doesn't match with required format")) {
+                lblWrongPassword.setText(lblWrongPassword.getText() + " and t" + ex.getMessage());
+            }else {
+                lblWrongPassword.setText(ex.getMessage());
+            }
+            lblWrongPassword.setVisible(true);
+        }
 
+        try {
             //Validar que el campo del teléfono (tfMobile) empiece por 6 o 7, si no, lanzaremos la excepción “WrongMobileFormatException”.
-            if (!tfMobile.getText().matches("[67]\\d{8}")) {
-                throw new WrongMobileFormatException("The phone number must start with 6 or 7 and can only contain numbers.");
+            if (!tfMobile.getText().isEmpty()) {
+                if (!tfMobile.getText().matches("[67]\\d{8}")) {
+                    throw new WrongMobileFormatException("The phone number must start with 6 or 7 and can only contain 9 numbers.");
+                }
             } else if (lblWrongMobile.isVisible()) {
                 lblWrongMobile.setVisible(false);
                 lblWrongMobile.setText("");
             }
+        } catch (WrongMobileFormatException ex) {
+            lblWrongMobile.setText(ex.getMessage());
+            lblWrongMobile.setVisible(true);
+        }
 
-            // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
-            if (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
-                    && !lblWrongEmailMax.isVisible() && !lblWrongEmailMax.isVisible()) {
-                user = new User();
-                user.setName(tfFirstName.getText() + " " + tfLastName.getText());
-                user.setEmail(tfEmail.getText());
-                user.setMobile(tfMobile.getText());
-                user.setPassword(pfPassword.getText());
-                user.setCity(tfCity.getText());
-                user.setPrivilege(Privilege.USER);
-                user.setStreet(tfStreet.getText());
-                user.setZip(tfZip.getText());
-            }
+        // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
+        if (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
+                && !lblWrongEmailMax.isVisible() && !lblWrongEmailMax.isVisible() && !lblWrongMobile.isVisible()) {
+            user = new User();
+            user.setName(tfFirstName.getText() + " " + tfLastName.getText());
+            user.setEmail(tfEmail.getText());
+            user.setMobile(tfMobile.getText());
+            user.setPassword(pfPassword.getText());
+            user.setCity(tfCity.getText());
+            user.setPrivilege(Privilege.USER);
+            user.setStreet(tfStreet.getText());
+            user.setZip(tfZip.getText());
 
             try {
+
                 User userResponse = ClientFactory.getImplementation().signUp(user);
 
                 if (userResponse != null) {
@@ -311,19 +348,8 @@ public class SignUpWindowController {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
                 Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (WrongNameFormatException ex) {
-            lblWrongName.setText(ex.getMessage());
-            lblWrongEmail.setVisible(true);
-        } catch (WrongEmailFormatException ex) {
-            lblWrongEmail.setText(ex.getMessage());
-            lblWrongEmail.setVisible(true);
-        } catch (WrongPasswordFormatException ex) {
-            lblWrongPassword.setText(ex.getMessage());
-            lblWrongPassword.setVisible(true);
-        } catch (WrongMobileFormatException ex) {
-            lblWrongMobile.setText(ex.getMessage());
-            lblWrongMobile.setVisible(true);
+        } else {
+            btnSignUp.setDisable(true);
         }
 
     }
