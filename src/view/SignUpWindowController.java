@@ -242,7 +242,7 @@ public class SignUpWindowController {
         User user = null;
         try {
             // Validar que el campo de nombre (tfFirstName) y el de apellido (tfLastName) no contengan valores numéricos, si no, lanzaremos la excepción “WrongNameFormatException”.
-            if (!tfFirstName.getText().matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$") || !tfLastName.getText().matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$")) {
+            if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfFirstName.getText()) || !Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfLastName.getText())) {
                 throw new WrongNameFormatException("The name or last name cannot contain numbers.");
             } else if (lblWrongName.isVisible()) {
                 lblWrongName.setVisible(false);
@@ -256,7 +256,7 @@ public class SignUpWindowController {
         try {
 
             //Validar que el campo del email (tfEmail) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
-            if (!tfEmail.getText().matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$")) {
+            if (!Pattern.matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$", tfEmail.getText())) {
                 throw new WrongEmailFormatException("The email must have a valid format.");
             } else if (lblWrongEmail.isVisible()) {
                 lblWrongEmail.setVisible(false);
@@ -269,7 +269,7 @@ public class SignUpWindowController {
 
         try {
             //Validar que ambos campos de las contraseñas (pfPassword y pfConfirmPassword) contengan la misma información y contengan mínimo 8 caracteres, de los cuales mínimo 1 mayúscula, 1 minuscula, y al menos 1 caracter especial, si no, lanzaremos la excepción “WrongPasswordFormatException”.
-            if (!pfConfirmPassword.getText().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$") || !pfPassword.getText().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$")) {
+            if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfConfirmPassword.getText()) || !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfPassword.getText())) {
 
                 throw new WrongPasswordFormatException("Password doesn't match with required format");
             } else {
@@ -305,7 +305,7 @@ public class SignUpWindowController {
         try {
             //Validar que el campo del teléfono (tfMobile) empiece por 6 o 7, si no, lanzaremos la excepción “WrongMobileFormatException”.
             if (!tfMobile.getText().isEmpty()) {
-                if (!tfMobile.getText().matches("[67]\\d{8}")) {
+                if (!Pattern.matches("^[67]\\d{8}", tfMobile.getText())) {
                     throw new WrongMobileFormatException("The phone number must start with 6 or 7 and can only contain 9 numbers.");
                 }
             } else if (lblWrongMobile.isVisible()) {
