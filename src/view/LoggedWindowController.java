@@ -14,7 +14,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import models.User;
@@ -65,12 +64,7 @@ public class LoggedWindowController {
      */
     public void initStage(Parent root, User user) {
         try {
-            LOGGER.info("Initializing the logged window.");
-
-            //Tooltips
-            this.lblHellou.setTooltip(new Tooltip("Message"));
-            this.btnLogOut.setTooltip(new Tooltip("Log Out"));
-            this.btnExit.setTooltip(new Tooltip("Exit"));
+            LOGGER.info("Initializing the logged window with the client: "+user.getName());
 
             //Set the user that log in to the messages.
             lblHellou.setText("Hello " + user.getName() + " to our Application.");
@@ -122,10 +116,10 @@ public class LoggedWindowController {
     private void handelLogOutButtonAction(ActionEvent event) {
         try {
             //Ask user for confirmation on exit
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to log out?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure, that you want to log out?");
             Optional<ButtonType> action = alert.showAndWait();
 
-            //If OK to exit
+            //If OK to exit 
             if (action.isPresent() && action.get() == ButtonType.OK) {
                 stage.close();
 
@@ -210,9 +204,4 @@ public class LoggedWindowController {
         alert.showAndWait();
 
     }
-
-    public void initStage(Parent root) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

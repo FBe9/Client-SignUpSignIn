@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import application.Application;
@@ -65,7 +60,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test of initStage method, of class SignInWindowController.
      */
-    public void testInitStage() {
+    public void test0_InitStage() {
         FxAssert.verifyThat("#tfEmail", hasText(""));
         FxAssert.verifyThat("#pfPassword", hasText(""));
         FxAssert.verifyThat("#tfPassword", hasText(""));
@@ -78,18 +73,20 @@ public class SignInWindowControllerTest extends ApplicationTest {
     @Test
     public void test1_TextChanged() {
         clickOn("#tfEmail");
-        write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXF");
+        write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXF");
         verifyThat("#lblEmailError", hasText("The maximum lenght for the Email is 300 characters,\n please change it."));
+        eraseText(400);
         write("nerea@gmail.com");
 
         verifyThat("#lblEmailError", hasText(""));
 
         clickOn("#pfPassword");
-        write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXF");
+        write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXF");
         verifyThat("#lblPasswordError", hasText("The maximum lenght for the Password is 300\ncharacters, please change it."));
+        eraseText(400);
         write("abcd*1234");
 
-        verifyThat("#lblPasswordError", hasText(""));
+        verifyThat("#lblError", hasText(""));
     }
 
     /**
@@ -98,10 +95,27 @@ public class SignInWindowControllerTest extends ApplicationTest {
      */
     //@Test
     public void test2_HandelEyeToggleButtonAction() {
+        clickOn("#tgbEye");
 
         Assert.assertFalse(pfPassword.isVisible());
         verifyThat("#tfPassword", isVisible());
 
+        clickOn("#tgbEye");
+
+        Assert.assertFalse(tfPassword.isVisible());
+        verifyThat("#pfPassword", isVisible());
+    }
+    
+    /**
+     * Test if the pfPassword and the tfPassword have the same text.
+     */
+    //@Test
+    public void test3_PasswordSameText() {
+        verifyThat("#pfPassword", hasText("abcd*1234"));
+        eraseText(9);
+        verifyThat("#tfPassword", hasText("abcd*1234"));
+        eraseText(9);
+        
     }
 
     /**
@@ -109,7 +123,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * not full.
      */
     //@Test
-    public void test3_LogInButtonIsDisabled() {
+    public void test4_LogInButtonIsDisabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnAccept", isDisabled());
@@ -125,7 +139,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that button Accept is enabled.
      */
     //@Test
-    public void test4_HandelAcceptButtonActionEnabled() {
+    public void test5_HandelAcceptButtonActionEnabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnLogIn", isDisabled());
@@ -138,7 +152,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that SignUp view is opened when hyperlink Sign Up is clicked.
      */
     //@Test
-    public void test5_HandelSignUpHyperlink() {
+    public void test6_HandelSignUpHyperlink() {
         clickOn("#httpSignUp");
         verifyThat("#pnSignUp", isVisible());
     }
@@ -147,7 +161,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Testing the label when you close the window.
      */
     //@Test
-    public void test6_HandleOnActionExit() {
+    public void test7_HandleOnActionExit() {
         closeCurrentWindow();
         verifyThat("Are you sure you want to exit the application?", isVisible());
         clickOn("Aceptar");
