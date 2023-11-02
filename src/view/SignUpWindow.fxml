@@ -24,7 +24,7 @@
             <Image url="@../resources/background2.png" /> 
          </image>
       </ImageView>
-      <Label layoutX="779.0" layoutY="62.0" text="Sing Up">
+      <Label layoutX="779.0" layoutY="62.0" text="Sign Up">
          <font>
             <Font name="Goudy Old Style" size="36.0" />
          </font>
@@ -123,7 +123,7 @@
          <tooltip>
             <Tooltip text="Ex: 666666666" />
          </tooltip></TextField>
-      <Button fx:id="btnSignUp" layoutX="839.0" layoutY="637.0" minWidth="0.0" mnemonicParsing="false" onAction="#handlerSignUpButton" prefHeight="18.0" prefWidth="216.0" style="-fx-background-color: BLACK; -fx-border-radius: 5;" text="Sing Up" textFill="#ede5e5">
+      <Button fx:id="btnSignUp" layoutX="839.0" layoutY="637.0" minWidth="0.0" mnemonicParsing="false" onAction="#handlerSignUpButton" prefHeight="18.0" prefWidth="216.0" style="-fx-background-color: BLACK; -fx-border-radius: 5;" text="Sign Up" textFill="#ede5e5">
 
          <font>
             <Font size="16.0" />
