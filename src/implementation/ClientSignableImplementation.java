@@ -1,7 +1,6 @@
 package implementation;
 
 import client.Client;
-import exceptions.DatabaseErrorException;
 import exceptions.EmailExistsException;
 import exceptions.LoginCredentialException;
 import exceptions.ServerErrorException;
@@ -32,7 +31,7 @@ public class ClientSignableImplementation implements Signable {
      * in the database.
      */
     @Override
-    public User signUp(User user) throws ServerErrorException, EmailExistsException, DatabaseErrorException {
+    public User signUp(User user) throws ServerErrorException, EmailExistsException {
 
         ResponseRequest request = new ResponseRequest();
         ResponseRequest response = new ResponseRequest();
@@ -50,10 +49,9 @@ public class ClientSignableImplementation implements Signable {
                 case EMAIL_EXITS_ERROR:
                     throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
                 case SERVER_CAPACITY_ERROR:
+                    throw new ServerErrorException("Server is at max capacity, please try again later.");
                 case SERVER_ERROR:
                     throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
-                case DATABASE_ERROR:
-                    throw new ServerErrorException("Internal Server Error: We're experiencing technical with the database. Please try again later or contact our support team for assistance.");
                 case RESPONSE_OK:
                     userResponse = response.getUser();
                     break;
@@ -101,13 +99,15 @@ public class ClientSignableImplementation implements Signable {
                     break;
                 //The user does not exist
                 case CREDENTIAL_ERROR:
-                    throw new LoginCredentialException("Unknown user, plese change the login or the password.");
+                    throw new LoginCredentialException("Unknown user, please change the login or the password.");
                 //Something happens at the server
+                case SERVER_CAPACITY_ERROR:
+                    throw new ServerErrorException("Server is at max capacity, please try again later.");
                 case SERVER_ERROR:
-                    throw new ServerErrorException("It occurs an error at the server, plese try again later");
+                    throw new ServerErrorException("It occurs an error at the server, plese try again later.");
             }
         }
-        
+
         return serverUser;
 
     }
