@@ -1,6 +1,5 @@
 package view;
 
-import exceptions.DatabaseErrorException;
 import exceptions.EmailExistsException;
 import exceptions.ServerErrorException;
 import exceptions.WrongEmailFormatException;
@@ -338,15 +337,8 @@ public class SignUpWindowController {
                     stage.close();
                 }
 
-            } catch (ServerErrorException ex) {
+            } catch (ServerErrorException | EmailExistsException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-                Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (EmailExistsException ex) {
-                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-                Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DatabaseErrorException ex) {
-                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-                Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             btnSignUp.setDisable(true);
