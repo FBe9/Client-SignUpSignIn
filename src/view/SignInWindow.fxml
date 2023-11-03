@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pnSignIn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInWindowController">
+<Pane fx:id="signInPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignInWindowController">
    <children>
       <ImageView fitHeight="310.0" fitWidth="550.0" layoutX="349.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -38,20 +38,20 @@
             <Image url="@../resources/blackStar.png" />
          </image>
       </ImageView>
-      <TextField fx:id="tfEmail" layoutX="342.0" layoutY="276.0" prefHeight="25.0" prefWidth="222.0" />
-      <PasswordField fx:id="pfPassword" layoutX="344.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" />
-      <TextField fx:id="tfPassword" layoutX="344.0" layoutY="342.0" prefHeight="25.0" prefWidth="222.0" visible="false" />
-      <Label layoutX="403.0" layoutY="189.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
+      <TextField fx:id="tfEmail" layoutX="342.0" layoutY="253.0" prefHeight="25.0" prefWidth="222.0" />
+      <PasswordField fx:id="pfPassword" layoutX="344.0" layoutY="345.0" prefHeight="25.0" prefWidth="222.0" />
+      <TextField fx:id="tfPassword" layoutX="344.0" layoutY="345.0" prefHeight="25.0" prefWidth="222.0" visible="false" />
+      <Label layoutX="403.0" layoutY="166.0" text="Sign In" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="432.0" layoutY="251.0" text="Email" textFill="WHITE">
+      <Label layoutX="432.0" layoutY="228.0" text="Email" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="421.0" layoutY="317.0" text="Password" textFill="WHITE">
+      <Label layoutX="421.0" layoutY="320.0" text="Password" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style" size="18.0" />
          </font>
@@ -70,15 +70,20 @@
          <font>
             <Font name="Goudy Old Style" size="13.0" />
          </font></Button>
-      <ImageView fitHeight="85.0" fitWidth="42.0" layoutX="432.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="85.0" fitWidth="42.0" layoutX="432.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/person.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="373.0" prefHeight="34.0" prefWidth="295.0" textAlignment="CENTER" textFill="RED">
+      <Label fx:id="lblError" alignment="CENTER" contentDisplay="CENTER" layoutX="308.0" layoutY="376.0" prefHeight="34.0" prefWidth="295.0" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Goudy Old Style" size="13.0" />
          </font></Label>
       <ToggleButton fx:id="tgbEye" layoutX="567.0" layoutY="340.0" mnemonicParsing="false" onAction="#handelEyeToggleButtonAction" prefHeight="24.0" prefWidth="32.0" style="-fx-background-color: transparent;" />
+      <Label fx:id="lblEmailError" alignment="CENTER" contentDisplay="CENTER" layoutX="305.0" layoutY="283.0" prefHeight="34.0" prefWidth="295.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Goudy Old Style" size="13.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

@@ -4,7 +4,9 @@ import exceptions.ServerErrorException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,27 +50,17 @@ public class Client {
         ResponseRequest response = new ResponseRequest();
         try {
             // Receives a socket of the server
-            TimeOutThread timeOut = new TimeOutThread();
-            timeOut.sleepy();
-            server = new Socket(IP, PORT);
-            while (timeOut.isAlive()) {
-                if (server.isConnected()) {
-                    timeOut.interrupt();
-                }
-            }
-            if (!timeOut.isAlive() && !server.isConnected()) {
-                throw new ServerErrorException();
-            } else if (!timeOut.isAlive() && server.isConnected()) {
-                logger.info("Connection established with server");
-            } else {
-                throw new ServerErrorException();
-            }
+            server = new Socket();
+            SocketAddress socketAddress = new InetSocketAddress(IP, PORT);
 
-            //Initialize ObjectInputStream and ObjectOutputStream
+            // Set a timeout for the connection
+            server.connect(socketAddress, 10000);
+
+            // Initialize ObjectInputStream and ObjectOutputStream
             read = new ObjectInputStream(server.getInputStream());
             write = new ObjectOutputStream(server.getOutputStream());
 
-            //Sends the request to the server
+            // Send the request to the server
             write.writeObject(request);
 
             try {
@@ -84,12 +76,13 @@ public class Client {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ServerErrorException ex) {
-           throw new ServerErrorException();
+            throw new ServerErrorException();
         } finally {
             try {
-                server.close();
+                if (server != null) {
+                    server.close();
+                }
+
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
