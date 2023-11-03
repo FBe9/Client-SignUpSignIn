@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoggedWindowController">
+<Pane fx:id="pnLogged" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoggedWindowController">
    <children>
       <ImageView fitHeight="306.0" fitWidth="545.0" layoutX="354.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -43,7 +43,7 @@
          </font>
       </Label>
       <Accordion layoutY="7.0" />
-    <TitledPane animated="false" layoutY="-1.0" prefHeight="94.0" prefWidth="144.0" text="Menu">
+    <TitledPane fx:id="tpMenu" animated="false" layoutY="-1.0" prefHeight="94.0" prefWidth="144.0" text="Menu">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="31.0" prefWidth="141.0" style="-fx-background-color: #ffff;">
                <children>
