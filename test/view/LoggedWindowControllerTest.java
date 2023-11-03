@@ -62,6 +62,8 @@ public class LoggedWindowControllerTest extends ApplicationTest {
         clickOn("#btnLogOut");
         verifyThat("Are you sure that you want to log out?", isVisible());
         clickOn("Aceptar");
+        
+        verifyThat("#signInPane", isVisible());
     }
 
     /**
