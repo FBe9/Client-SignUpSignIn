@@ -20,7 +20,7 @@ import models.User;
 
 /**
  * Controller UI class for Logged view. It contains event handlers and
- * initialization code for the view defined in LoggedWindow.fxml file.
+ * initialisation code for the view defined in LoggedWindow.fxml file.
  *
  * @author Leire
  * @author Nerea
@@ -57,7 +57,7 @@ public class LoggedWindowController {
     - Mostrar ventana.
      */
     /**
-     * Method for initializing Logged Stage.
+     * Method for initialising Logged Stage.
      *
      * @param root The Parent object representing root node of view graph.
      * @param user It is the user who is logged in.
@@ -105,10 +105,9 @@ public class LoggedWindowController {
         · Si no confirma, mantenerse en la ventana.
      */
     /**
-     * This method is from the "Log Out" button. It asks you for confirmation if
-     * you want to log out. If the answer is yes, the window closes and the
-     * "Sign in" window opens. If the answer is no, the alert confirmation is
-     * closed.
+     * This method is for the "Log Out" button. It asks for a log out
+     * confirmation. If the answer is yes, the window closes and the "Sign in"
+     * window opens. If the answer is no, the alert confirmation is closed.
      *
      * @param event The Action event object
      */
@@ -150,9 +149,9 @@ public class LoggedWindowController {
             · Si no confirma, mantenerse en la ventana.
      */
     /**
-     * This method is from the "Exit" and the "X" button. It asks you for
-     * confirmation if you want to close the application. If the answer is yes,
-     * the window closes. If the answer is no, the alert confirmation is closed.
+     * This method is for the "Exit" and the "X" button. It asks for a
+     * confirmation to close the application. If the answer is yes, the window
+     * closes. If the answer is no, the alert confirmation is closed.
      *
      * @param event The Action event object
      */
@@ -183,7 +182,7 @@ public class LoggedWindowController {
             · Si no confirma, mantenerse en la ventana.
      */
     /**
-     * Stage setter
+     * Stage setter.
      *
      * @param stage The stage to set
      */
