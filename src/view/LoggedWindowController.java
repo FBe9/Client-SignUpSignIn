@@ -116,7 +116,7 @@ public class LoggedWindowController {
     private void handelLogOutButtonAction(ActionEvent event) {
         try {
             //Ask user for confirmation on exit
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure, that you want to log out?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to log out?");
             Optional<ButtonType> action = alert.showAndWait();
 
             //If OK to exit 
