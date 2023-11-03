@@ -40,7 +40,11 @@ public class ClientSignableImplementation implements Signable {
         try {
             response = Client.sendRecieveMessage(request);
         } catch (ServerErrorException ex) {
-            throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            if (ex.getMessage().equalsIgnoreCase("connect timed out")) {
+                throw new ServerErrorException("Server error: " + ex.getMessage());
+            } else {
+                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            }
         }
 
         User userResponse = null;
@@ -86,7 +90,11 @@ public class ClientSignableImplementation implements Signable {
         try {
             rrs = Client.sendRecieveMessage(rr);
         } catch (ServerErrorException ex) {
-            throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            if (ex.getMessage().equalsIgnoreCase("connect timed out")) {
+                throw new ServerErrorException("Server error: " + ex.getMessage());
+            } else {
+                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+            }
         }
 
         //Response from the Server

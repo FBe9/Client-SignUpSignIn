@@ -186,8 +186,7 @@ public class SignUpWindowController {
             String newValue) {
         //Validar que los campos full name, email, password, confirm password están informados
         if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmail.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
-                && !pfPassword.getText().trim().equals("")) || (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
-                && !lblWrongEmailMax.isVisible() && !lblWrongEmailMax.isVisible() && !lblWrongMobile.isVisible())) {
+                && !pfPassword.getText().trim().equals(""))) {
             btnSignUp.setDisable(false);
         } else {
             btnSignUp.setDisable(true);
@@ -337,7 +336,6 @@ public class SignUpWindowController {
                 }
             } else if (lblWrongMobile.isVisible()) {
                 lblWrongMobile.setVisible(false);
-                lblWrongMobile.setText("");
             }
         } catch (WrongMobileFormatException ex) {
             lblWrongMobile.setText(ex.getMessage());
@@ -347,11 +345,11 @@ public class SignUpWindowController {
 
         // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
         if (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
-                && !lblWrongEmailMax.isVisible() && !lblWrongEmailMax.isVisible() && !lblWrongMobile.isVisible()) {
+                && !lblWrongEmailMax.isVisible()) {
             user = new User();
             user.setName(tfFirstName.getText() + " " + tfLastName.getText());
             user.setEmail(tfEmail.getText());
-            user.setMobile(tfMobile.getText());
+            user.setMobile(tfMobile.getText()); 
             user.setPassword(pfPassword.getText());
             user.setCity(tfCity.getText());
             user.setPrivilege(Privilege.USER);
@@ -370,8 +368,6 @@ public class SignUpWindowController {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
                 Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            btnSignUp.setDisable(true);
         }
 
     }

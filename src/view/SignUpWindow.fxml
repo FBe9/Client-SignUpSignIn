@@ -146,7 +146,7 @@
       <Label fx:id="lblWrongName" alignment="TOP_CENTER" layoutX="615.0" layoutY="174.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
       <Label fx:id="lblWrongEmail" alignment="TOP_CENTER" layoutX="612.0" layoutY="259.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" />
       <Label fx:id="lblWrongPassword" alignment="TOP_CENTER" layoutX="615.0" layoutY="344.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" />
-      <Label fx:id="lblWrongMobile" alignment="TOP_CENTER" layoutX="615.0" layoutY="606.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" />
+      <Label fx:id="lblWrongMobile" alignment="TOP_CENTER" layoutX="615.0" layoutY="606.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
       <Label fx:id="lblWrongMobileMax" alignment="TOP_CENTER" layoutX="435.0" layoutY="568.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="173.0" text="Exceeded character limit" textAlignment="CENTER" textFill="#f80000" visible="false">
          <opaqueInsets>
             <Insets />

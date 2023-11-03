@@ -31,7 +31,7 @@ public class Client {
      * Static initialize for PORT and IP
      */
     static {
-        ResourceBundle config = ResourceBundle.getBundle("config.Config");
+        ResourceBundle config = ResourceBundle.getBundle("config.config");
         PORT = Integer.parseInt(config.getString("PORT"));
         IP = config.getString("IP");
     }
@@ -76,7 +76,7 @@ public class Client {
             }
 
         } catch (IOException ex) {
-            throw new ServerErrorException();
+            throw new ServerErrorException(ex.getMessage());
         } finally {
             try {
                 if (server != null) {
