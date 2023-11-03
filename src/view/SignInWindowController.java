@@ -30,8 +30,8 @@ import javafx.stage.Stage;
 import models.User;
 
 /**
- * FXML Controller class. It controlls what the signIn window components do. It
- * is the controller from the SignInWindow.fxml.
+ * FXML Controller class. It controls what the signIn window components do. It
+ * is the controller for the SignInWindow.fxml.
  *
  * @author Leire
  * @author Nerea
@@ -71,13 +71,13 @@ public class SignInWindowController {
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
 
     /**
-     * Initializes the window before showing, and then shows the window.
+     * Initialises the window before showing, and then shows the window.
      *
      * @param root a Parent object with the DOM.
      */
     public void initStage(Parent root) {
         try {
-            LOGGER.info("Initialiceing SignIn window");
+            LOGGER.info("Initialising SignIn window.");
             //Creas la escena
             Scene scene = new Scene(root);
             //Le estableces la escena al escenario
@@ -112,7 +112,7 @@ public class SignInWindowController {
             httpSignUp.setOnAction(this::handelSignUpHyperlink);
             //Mostrar la ventana. 
             stage.show();
-            LOGGER.info("Showing the SignIn window");
+            LOGGER.info("Showing the SignIn window.");
         } catch (Exception e) {
             String errorMsg = "Error opening window:\n" + e.getMessage();
             LOGGER.log(Level.SEVERE, errorMsg);
@@ -121,9 +121,9 @@ public class SignInWindowController {
     }
 
     /**
-     * Text changed event handler. Validate that all the fields are not empty
-     * and that Email and Passwords not surpass 300 characters.
-     * The Accept button is disabled when one of all fields are empty.
+     * Text changed event handler. Validates that all the fields aren't empty
+     * and that Email and Passwords don't surpass 300 characters. The Accept
+     * button is disabled when one of all the fields are empty.
      *
      * @param observable The value being observed.
      * @param oldValue The old value of the observable.
@@ -162,16 +162,16 @@ public class SignInWindowController {
     }
 
     /**
-     * It handel when it happens an acction with the toggle button tgbEye.
-     * 
+     * It handles the events in the toggle button tgbEye.
+     *
      * @param event the event that happens with the toggle button.
      */
     @FXML
     public void handelEyeToggleButtonAction(ActionEvent event) {
-        LOGGER.info("Handeling the eye toggle button");
+        LOGGER.info("Handeling the eye toggle button.");
         //Comprobar el estado del botón:
         if (tgbEye.isSelected()) {
-            LOGGER.info("eye pressed");
+            LOGGER.info("Eye pressed.");
             /**
              * Si está pulsado, el PasswordField “pfPassword” se volverá
              * invisible y el TextField “tfPassword” se volverá visible. El
@@ -182,7 +182,7 @@ public class SignInWindowController {
             tgbEye.setGraphic(new ImageView(closeEye));
 
         } else {
-            LOGGER.info("eye normal");
+            LOGGER.info("Eye normal.");
             /**
              * Si no está pulsado, el PasswordField “pfPassword” se volverá
              * visible y el TextField “tfPassword” se volverá invisible. El
@@ -195,14 +195,14 @@ public class SignInWindowController {
     }
 
     /**
-     * It handel what happens when you click in the button btnAccept.
-     * 
-     * @param event  the event that happens with the  button
+     * It handles what happens when the button btnAccept is pressed.
+     *
+     * @param event the event that happens with the button
      */
     @FXML
     public void handelAcceptButtonAction(ActionEvent event) {
         try {
-            LOGGER.info("Handeling the accept button");
+            LOGGER.info("Handeling the accept button.");
             /**
              * Validar que el email introducido tiene el formato válido propio
              * de un email, en caso contrario, informar al usuario con el
@@ -255,10 +255,11 @@ public class SignInWindowController {
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+
     /**
-     * It handel what happens when you clic in the hyperlink httpSignUp. 
-     * 
-     * @param event 
+     * It handles what happens when the hyperlink httpSignUp is pressed.
+     *
+     * @param event
      */
     @FXML
     public void handelSignUpHyperlink(ActionEvent event) {

@@ -9,14 +9,20 @@ import javafx.stage.Stage;
 import view.*;
 
 /**
+ * Main application class.
  *
  * @author Nerea
  */
 public class Application extends javafx.application.Application {
-    
+
+    /**
+     * Start method for the Application.
+     *
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
-         try {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInWindow.fxml"));
             Parent root = (Parent) loader.load();
             SignInWindowController controller = (SignInWindowController) loader.getController();
@@ -29,10 +35,12 @@ public class Application extends javafx.application.Application {
     }
 
     /**
+     * Main application method.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

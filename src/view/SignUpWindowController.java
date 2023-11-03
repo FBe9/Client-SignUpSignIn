@@ -36,7 +36,8 @@ import models.User;
 /**
  * FXML Controller class
  *
- * @author Irati y Olivia
+ * @author Irati
+ * @author Olivia
  */
 public class SignUpWindowController {
 
@@ -100,12 +101,12 @@ public class SignUpWindowController {
     protected final int MAX_LENGTH_MOBILE = 9;
 
     /**
-     * Initializes the controller class.
+     * Initialises the controller class.
      *
      * @param root
      */
     public void initStage(Parent root) {
-        LOGGER.info("Inicializando la ventana de SignUp");
+        LOGGER.info("Initialising Sign Up window.");
         //Creas la escena
         Scene scene = new Scene(root);
         //Le estableces la escena al escenario
@@ -161,12 +162,25 @@ public class SignUpWindowController {
 
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
+        LOGGER.info("Window opened.");
     }
 
+    /**
+     * The stage for the window.
+     *
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Observes the text change event of the text fields.
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     private void textPropertyChange(ObservableValue observable,
             String oldValue,
             String newValue) {
@@ -212,6 +226,11 @@ public class SignUpWindowController {
         }
     }
 
+    /**
+     * Handles the toggle event of the Eye Toggle Button.
+     *
+     * @param event
+     */
     @FXML
     private void handlertgbEye(ActionEvent event) {
         ImageView currentImage = (ImageView) tgbEye.getGraphic();
@@ -236,6 +255,11 @@ public class SignUpWindowController {
         }
     }
 
+    /**
+     * Handles the event in the Sign Up button.
+     *
+     * @param event
+     */
     @FXML
     private void handlerSignUpButton(ActionEvent event) {
         User user = null;
@@ -251,6 +275,7 @@ public class SignUpWindowController {
         } catch (WrongNameFormatException ex) {
             lblWrongName.setText(ex.getMessage());
             lblWrongName.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
 
@@ -264,6 +289,7 @@ public class SignUpWindowController {
         } catch (WrongEmailFormatException ex) {
             lblWrongEmail.setText(ex.getMessage());
             lblWrongEmail.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -278,6 +304,7 @@ public class SignUpWindowController {
         } catch (WrongPasswordFormatException ex) {
             lblWrongPassword.setText(ex.getMessage());
             lblWrongPassword.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             if (!pfConfirmPassword.getText().equals(pfPassword.getText())) {
@@ -295,10 +322,11 @@ public class SignUpWindowController {
                 lblWrongPassword.setText("T" + ex.getMessage());
             } else if (lblWrongPassword.getText().equals("Password doesn't match with required format")) {
                 lblWrongPassword.setText(lblWrongPassword.getText() + " and t" + ex.getMessage());
-            }else {
+            } else {
                 lblWrongPassword.setText(ex.getMessage());
             }
             lblWrongPassword.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongPassword.getText());
         }
 
         try {
@@ -314,6 +342,7 @@ public class SignUpWindowController {
         } catch (WrongMobileFormatException ex) {
             lblWrongMobile.setText(ex.getMessage());
             lblWrongMobile.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
@@ -339,6 +368,7 @@ public class SignUpWindowController {
 
             } catch (ServerErrorException | EmailExistsException ex) {
                 new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+                Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             btnSignUp.setDisable(true);
@@ -346,8 +376,14 @@ public class SignUpWindowController {
 
     }
 
+    /**
+     * Handles the exit event.
+     *
+     * @param event
+     */
     public void handleOnActionExit(Event event) {
         try {
+            LOGGER.info("EXIT pressed.");
             //Pedir confirmación al usuario para salir:
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                     "Are you sure you want to exit?",
@@ -357,9 +393,11 @@ public class SignUpWindowController {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 //Si el usuario confirma, cerrar la ventana.
                 stage.close();
+                LOGGER.info("Window closed.");
             } else {
                 //Si no confirma, mantenerse en la ventana.
                 event.consume();
+                LOGGER.info("Aborted.");
             }
         } catch (Exception e) {
             String errorMsg = "Error exiting application:" + e.getMessage();
