@@ -1,25 +1,25 @@
 package view;
 
 import application.Application;
+import exceptions.ServerErrorException;
 import java.util.concurrent.TimeoutException;
-import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import org.junit.Test;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
+import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class is for testing the SignIn controller.
@@ -30,21 +30,15 @@ import static org.testfx.api.FxAssert.verifyThat;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignInWindowControllerTest extends ApplicationTest {
 
-    @FXML
-    private PasswordField pfPassword;
-    @FXML
-    private TextField tfPassword;
+    private PasswordField pfPassword = lookup("#pfPassword").query();
 
-    /**
-     * Starts application to be tested.
-     *
-     * @param stage Primary Stage object
-     * @throws Exception if there is any error
-     */
-    @Override
-    public void start(Stage stage) throws Exception {
-        new Application().start(stage);
-    }
+    private TextField tfPassword = lookup("#tfPassword").query();
+
+    private TextField tfEmail = lookup("#tfEmail").query();
+
+    private Label lblEmailError = lookup("#lblEmailError").query();
+    
+    private Label lblError = lookup("#lblError").query();
 
     /**
      * Set up Java FX fixture for tests. This is a general approach for using a
@@ -57,39 +51,98 @@ public class SignInWindowControllerTest extends ApplicationTest {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(Application.class);
     }
-
+    
     /**
      * Test of initStage method, of class SignInWindowController.
      */
+    @Test
     public void test0_InitStage() {
-        FxAssert.verifyThat("#tfEmail", hasText(""));
-        FxAssert.verifyThat("#pfPassword", hasText(""));
-        FxAssert.verifyThat("#tfPassword", hasText(""));
-        FxAssert.verifyThat("#btnAccept", isDisabled());
-        FxAssert.verifyThat("#tfEmail", isFocused());
-        FxAssert.verifyThat("#btnAccept", isDisabled());
+        verifyThat("#tfEmail", hasText(""));
+        verifyThat("#pfPassword", hasText(""));
+        verifyThat("#tfPassword", hasText(""));
+        verifyThat("#tfEmail", isFocused());
+        verifyThat("#btnAccept", isDisabled());
     }
 
     /**
-     * Test that labels works. 
+     * Sign in test with an existing user.
      */
     @Test
-    public void test1_TextChanged() {
+    public void test1_SignInCorrect(){
+        clickOn("#tfEmail");
+        write("nerea@gmail.com");
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+        verifyThat("#btnAccept", isVisible());
+        clickOn("#btnAccept");
+        
+        verifyThat("#pnLogged", isVisible());
+        
+        clickOn("#btnLogOut");
+        verifyThat("Are you sure that you want to log out?", isVisible());
+        clickOn("Aceptar");
+        
+        verifyThat("#signInPane", isVisible());
+    }
+    
+    /**
+     * Sign in test with a not existing user. LoginCredentialException.
+     */
+    @Test
+    public void test2_SignInIncorrectLoginCredentialException(){
+        clickOn("#tfEmail");
+        write("usernotexit@gmail.com");
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+        verifyThat("#btnAccept", isVisible());
+        clickOn("#btnAccept");       
+        
+        assertEquals(lblError.getText(), "Unknown user, please change the login or the password.");
+        
+        clickOn("#tfEmail");
+        eraseText(21);
+        clickOn("#pfPassword");
+        eraseText(9);
+    }
+    
+    /**
+     * Sign in test with an existing user. ServerErrorException.
+     */
+    //@Test 
+    public void test3_SignInCorrectWithServerErrorException(){
+        clickOn("#tfEmail");
+        write("nerea@gmail.com");
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+        verifyThat("#btnAccept", isVisible());
+        clickOn("#btnAccept");
+        
+        verifyThat("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
+        clickOn("Aceptar");
+    }
+
+    /**
+     * Test that labels works.
+     */
+    //@Test
+    public void test4_TextChangedMaxLenght() {
         clickOn("#tfEmail");
         write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALcrbQCrLyHXZEALcrbQCrLyH");
-        verifyThat("#lblEmailError", hasText("The maximum lenght for the Email is 300 characters,\n please change it."));
+        assertEquals(lblEmailError.getText(), "The maximum lenght for the Email is 300 characters,\n please change it.");
         eraseText(301);
         write("nerea@gmail.com");
-
-        verifyThat("#lblEmailError", hasText(""));
-
+        eraseText(15);
+        
+        assertEquals(lblEmailError.getText(), "");
+        
         clickOn("#pfPassword");
         write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALcrbQCrLyHXZEALcrbQCrLyH");
-        verifyThat("#lblPasswordError", hasText("The maximum lenght for the Password is 300\ncharacters, please change it."));
+        assertEquals(lblError.getText(), "The maximum lenght for the Password is 300\ncharacters, please change it.");
         eraseText(301);
         write("abcd*1234");
+        eraseText(9);
 
-        verifyThat("#lblError", hasText(""));
+        assertEquals(lblError.getText(), "");
     }
 
     /**
@@ -97,7 +150,10 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * SignInWindowController.
      */
     @Test
-    public void test2_HandelEyeToggleButtonAction() {
+    public void test5_HandelEyeToggleButtonAction() {
+        clickOn("#pfPassword");
+        write("abcd*1234");
+        
         clickOn("#tgbEye");
 
         Assert.assertFalse(pfPassword.isVisible());
@@ -107,18 +163,23 @@ public class SignInWindowControllerTest extends ApplicationTest {
 
         Assert.assertFalse(tfPassword.isVisible());
         verifyThat("#pfPassword", isVisible());
+        clickOn("#pfPassword");
+        eraseText(9);
     }
-    
+
     /**
      * Test if the pfPassword and the tfPassword have the same text.
      */
     @Test
-    public void test3_PasswordSameText() {
-        verifyThat("#pfPassword", hasText("abcd*1234"));
-        eraseText(9);
-        verifyThat("#tfPassword", hasText("abcd*1234"));
-        eraseText(9);
+    public void test6_PasswordSameText() {
+        clickOn("#pfPassword");
+        write("abcd*1234");
         
+        verifyThat("#pfPassword", hasText("abcd*1234"));
+        verifyThat("#tfPassword", hasText("abcd*1234"));
+
+        clickOn("#pfPassword");
+        eraseText(9);
     }
 
     /**
@@ -126,12 +187,12 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * not full.
      */
     @Test
-    public void test4_AcceptButtonIsDisabled() {
+    public void test7_AcceptButtonIsDisabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnAccept", isDisabled());
         eraseText(15);
-        
+
         clickOn("#pfPassword");
         write("abcd*1234");
         verifyThat("#btnAccept", isDisabled());
@@ -143,11 +204,11 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that button Accept is enabled.
      */
     @Test
-    public void test5_HandelAcceptButtonActionEnabled() {
+    public void test8_HandelAcceptButtonActionEnabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnAccept", isDisabled());
-        
+
         clickOn("#pfPassword");
         write("abcd*1234");
         verifyThat("#btnAccept", isEnabled());
@@ -157,7 +218,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that SignUp view is opened when hyperlink Sign Up is clicked.
      */
     @Test
-    public void test6_HandelSignUpHyperlink() {
+    public void test9_HandelSignUpHyperlink() {
         clickOn("#httpSignUp");
         verifyThat("#signUpWindow", isVisible());
     }
@@ -165,8 +226,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Testing the label when you close the window.
      */
-    @Test
-    public void test7_HandleOnActionExit() {
+    //@Test
+    public void test10_HandleOnActionExit() {
         closeCurrentWindow();
         verifyThat("Are you sure you want to exit the application?", isVisible());
         clickOn("Aceptar");

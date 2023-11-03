@@ -2,7 +2,6 @@ package view;
 
 import application.Application;
 import java.util.concurrent.TimeoutException;
-import javafx.stage.Stage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
@@ -19,17 +18,6 @@ import static org.testfx.api.FxAssert.verifyThat;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LoggedWindowControllerTest extends ApplicationTest {
-
-    /**
-     * Starts application to be tested
-     *
-     * @param stage Primary Stage object
-     * @throws Exception if there is any error
-     */
-    @Override
-    public void start(Stage stage) throws Exception {
-        new Application().start(stage);
-    }
 
     /**
      * Set up Java FX fixture for tests. This is a general approach for using a
@@ -52,12 +40,12 @@ public class LoggedWindowControllerTest extends ApplicationTest {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         clickOn("#pfPassword");
-        write("abcd*1234");
+        write("Abcd*1234");
         verifyThat("#btnAccept", isVisible());
         clickOn("#btnAccept");
 
         verifyThat("#pnLogged", isVisible());
-        verifyThat("Hello Nerea to our Application.", isVisible());
+        verifyThat("Hello Nerea Apellido to our Application.", isVisible());
 
         clickOn("#btnLogOut");
         verifyThat("Are you sure that you want to log out?", isVisible());
@@ -75,12 +63,12 @@ public class LoggedWindowControllerTest extends ApplicationTest {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         clickOn("#pfPassword");
-        write("abcd*1234");
+        write("Abcd*1234");
         verifyThat("#btnAccept", isVisible());
         clickOn("#btnAccept");
         
         verifyThat("#pnLogged", isVisible());
-        verifyThat("Hello Nerea to our Application.", isVisible());
+        verifyThat("Hello Nerea Apellido to our Application.", isVisible());
 
         //clickOn("tpMenu");
         clickOn("#btnExit");
