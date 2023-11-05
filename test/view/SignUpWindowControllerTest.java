@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import application.Application;
@@ -23,18 +18,30 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
+ * This class contains test cases for the SignUpWindowController in a JavaFX
+ * application.
+ *
  *
  * @author Irati
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignUpWindowControllerTest extends ApplicationTest {
 
+    /**
+     * Set up the test environment before executing any test cases.
+     *
+     * @throws TimeoutException if there's a timeout while setting up the JavaFX
+     * application.
+     */
     @Before
     public void setUp() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(Application.class);
     }
 
+    /**
+     * Test case to initialize the application stage and verify initial state.
+     */
     @Test
     public void test0_initStage() {
         clickOn("#httpSignUp");
@@ -52,6 +59,9 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         verifyThat("#btnSignUp", isDisabled());
     }
 
+    /**
+     * Test case for the sign-up process.
+     */
     @Test
     public void test1_signUp() {
         clickOn("#httpSignUp");
@@ -92,6 +102,9 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         verifyThat("#signInPane", isVisible());
     }
 
+    /**
+     * Test case for handling an email already exists exception during sign-up.
+     */
     @Test
     public void test2_signUpEmailAlreadyExitsException() {
         clickOn("#httpSignUp");
@@ -118,6 +131,9 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
     }
 
+    /**
+     * Test case for handling a server error exception during sign-up.
+     */
     @Test
     public void test3_signUpServerErrorException() {
 
@@ -145,6 +161,11 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
     }
 
+    /**
+     * Clean up the test environment after executing all test cases.
+     *
+     * @throws TimeoutException if there's a timeout while cleaning up.
+     */
     @After
     public void tearDown() throws TimeoutException {
         FxToolkit.cleanupStages();
