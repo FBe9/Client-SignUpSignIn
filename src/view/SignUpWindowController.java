@@ -266,6 +266,7 @@ public class SignUpWindowController {
      */
     @FXML
     private void handlerSignUpButton(ActionEvent event) {
+        boolean flag = true ;
         User user = null;
         try {
             // Validar que el campo de nombre (tfFirstName) y el de apellido (tfLastName) no contengan valores numéricos, si no, lanzaremos la excepción “WrongNameFormatException”.
@@ -273,7 +274,6 @@ public class SignUpWindowController {
                 throw new WrongNameFormatException("The name or last name cannot contain numbers.");
             } else if (lblWrongName.isVisible()) {
                 lblWrongName.setVisible(false);
-                lblWrongName.setText("");
 
             }
         } catch (WrongNameFormatException ex) {
@@ -288,7 +288,6 @@ public class SignUpWindowController {
                 throw new WrongEmailFormatException("The email must have a valid format.");
             } else if (lblWrongEmail.isVisible()) {
                 lblWrongEmail.setVisible(false);
-                lblWrongEmail.setText("");
             }
         } catch (WrongEmailFormatException ex) {
             lblWrongEmail.setText(ex.getMessage());
@@ -320,21 +319,22 @@ public class SignUpWindowController {
                 }
             }
         } catch (WrongPasswordFormatException ex) {
-            if (lblWrongPassword.getText().isEmpty()) {
-                lblWrongPassword.setText("T" + ex.getMessage());
-            } else if (lblWrongPassword.getText().equals("Password doesn't match with required format")) {
+            if (lblWrongPassword.getText().equals("Password doesn't match with required format")) {
                 lblWrongPassword.setText(lblWrongPassword.getText() + " and t" + ex.getMessage());
             } else {
-                lblWrongPassword.setText(ex.getMessage());
+                lblWrongPassword.setText("T" + ex.getMessage());
             }
             lblWrongPassword.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongPassword.getText());
         }
 
         try {
-            if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfCity.getText())) {
-                throw new WrongCityFormatException("City cannot contain numbers");
-            } else {
+            if (!tfCity.getText().isEmpty()) {
+                if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfCity.getText())) {
+                    flag = false;
+                    throw new WrongCityFormatException("City cannot contain numbers");
+                }
+            } else if (lblWrongCityZip.isVisible()) {
                 lblWrongCityZip.setVisible(false);
             }
         } catch (WrongCityFormatException ex) {
@@ -342,8 +342,13 @@ public class SignUpWindowController {
             lblWrongCityZip.setVisible(true);
         }
         try {
-            if (!Pattern.matches("^\\d{5}$", tfZip.getText())) {
-                throw new WrongZipFormatException("ip must have 5 numeric numbers");
+            if (!tfZip.getText().isEmpty()) {
+                if (!Pattern.matches("^\\d{5}$", tfZip.getText())) {
+                    throw new WrongZipFormatException("ip must have 5 numeric numbers.");
+                } else if (flag){
+                    lblWrongCityZip.setVisible(false);
+                    lblWrongCityZip.setText("");
+               }
             } else {
                 if (lblWrongCityZip.getText().isEmpty()) {
                     lblWrongCityZip.setVisible(false);
@@ -352,12 +357,10 @@ public class SignUpWindowController {
                 }
             }
         } catch (WrongZipFormatException ex) {
-            if (lblWrongCityZip.getText().isEmpty()) {
-                lblWrongCityZip.setText("Z" + ex.getMessage());
-            } else if (lblWrongCityZip.getText().equals("City cannot contain numbers")) {
-                lblWrongCityZip.setText(lblWrongCityZip.getText() + "\n and z" + ex.getMessage());
+            if (lblWrongCityZip.getText().equals("City cannot contain numbers")) {
+                lblWrongCityZip.setText(lblWrongCityZip.getText() + " and z" + ex.getMessage());
             } else {
-                lblWrongCityZip.setText(ex.getMessage());
+                lblWrongCityZip.setText("Z" + ex.getMessage());
             }
             lblWrongCityZip.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongCityZip.getText());
