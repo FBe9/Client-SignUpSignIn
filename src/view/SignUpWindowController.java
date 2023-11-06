@@ -2,10 +2,12 @@ package view;
 
 import exceptions.EmailExistsException;
 import exceptions.ServerErrorException;
+import exceptions.WrongCityFormatException;
 import exceptions.WrongEmailFormatException;
 import exceptions.WrongMobileFormatException;
 import exceptions.WrongNameFormatException;
 import exceptions.WrongPasswordFormatException;
+import exceptions.WrongZipFormatException;
 import factory.ClientFactory;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -91,6 +93,8 @@ public class SignUpWindowController {
     private Label lblWrongMobileMax;
     @FXML
     private Label lblWrongPasswordMax;
+    @FXML
+    private Label lblWrongCityZip;
 
     private Image openEye;
     private Image closeEye;
@@ -191,6 +195,7 @@ public class SignUpWindowController {
         } else {
             btnSignUp.setDisable(true);
         }
+
         //El texto del “pfPassword” se copiará en “tfPassword” y viceversa. Y el texto del “pfConfirmPassword” se copiará en el “tfConfirmPassword” y viceversa.
         if (pfPassword.isVisible() && !pfPassword.equals(tfPassword)) {
             tfPassword.setText(pfPassword.getText());
@@ -298,7 +303,6 @@ public class SignUpWindowController {
                 throw new WrongPasswordFormatException("Password doesn't match with required format");
             } else {
                 lblWrongPassword.setVisible(false);
-                lblWrongPassword.setText("");
             }
         } catch (WrongPasswordFormatException ex) {
             lblWrongPassword.setText(ex.getMessage());
@@ -311,7 +315,6 @@ public class SignUpWindowController {
             } else {
                 if (lblWrongPassword.getText().isEmpty()) {
                     lblWrongPassword.setVisible(false);
-                    lblWrongPassword.setText("");
                 } else {
                     lblWrongPassword.setText(lblWrongPassword.getText() + ".");
                 }
@@ -326,6 +329,38 @@ public class SignUpWindowController {
             }
             lblWrongPassword.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongPassword.getText());
+        }
+
+        try {
+            if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfCity.getText())) {
+                throw new WrongCityFormatException("City cannot contain numbers");
+            } else {
+                lblWrongCityZip.setVisible(false);
+            }
+        } catch (WrongCityFormatException ex) {
+            lblWrongCityZip.setText(ex.getMessage());
+            lblWrongCityZip.setVisible(true);
+        }
+        try {
+            if (!Pattern.matches("^\\d{5}$", tfZip.getText())) {
+                throw new WrongZipFormatException("ip must have 5 numeric numbers");
+            } else {
+                if (lblWrongCityZip.getText().isEmpty()) {
+                    lblWrongCityZip.setVisible(false);
+                } else {
+                    lblWrongCityZip.setText(lblWrongCityZip.getText() + ".");
+                }
+            }
+        } catch (WrongZipFormatException ex) {
+            if (lblWrongCityZip.getText().isEmpty()) {
+                lblWrongCityZip.setText("Z" + ex.getMessage());
+            } else if (lblWrongCityZip.getText().equals("City cannot contain numbers")) {
+                lblWrongCityZip.setText(lblWrongCityZip.getText() + "\n and z" + ex.getMessage());
+            } else {
+                lblWrongCityZip.setText(ex.getMessage());
+            }
+            lblWrongCityZip.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongCityZip.getText());
         }
 
         try {
@@ -345,11 +380,11 @@ public class SignUpWindowController {
 
         // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
         if (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
-                && !lblWrongEmailMax.isVisible()) {
+                && !lblWrongEmailMax.isVisible() && !lblWrongCityZip.isVisible()) {
             user = new User();
             user.setName(tfFirstName.getText() + " " + tfLastName.getText());
             user.setEmail(tfEmail.getText());
-            user.setMobile(tfMobile.getText()); 
+            user.setMobile(tfMobile.getText());
             user.setPassword(pfPassword.getText());
             user.setCity(tfCity.getText());
             user.setPrivilege(Privilege.USER);
@@ -361,6 +396,7 @@ public class SignUpWindowController {
                 User userResponse = ClientFactory.getImplementation().signUp(user);
 
                 if (userResponse != null) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered", ButtonType.OK).showAndWait();
                     stage.close();
                 }
 
