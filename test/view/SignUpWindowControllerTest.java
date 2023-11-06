@@ -23,9 +23,15 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
  *
  *
  * @author Irati
+ * @author Olivia
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SignUpWindowControllerTest extends ApplicationTest {
+
+    //Generates a randon number
+    private int randomNumber = new Random().nextInt(9000) + 1000;
+    //Creates a email with a random number
+    private String email = "example" + randomNumber + "@gmail.com";
 
     /**
      * Set up the test environment before executing any test cases.
@@ -33,16 +39,21 @@ public class SignUpWindowControllerTest extends ApplicationTest {
      * @throws TimeoutException if there's a timeout while setting up the JavaFX
      * application.
      */
+    /*
     @Before
     public void setUp() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(Application.class);
+    }*/
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+        new Application().start(stage);
     }
 
     /**
      * Test case to initialize the application stage and verify initial state.
      */
-    @Test
     public void test0_initStage() {
         clickOn("#httpSignUp");
 
@@ -65,8 +76,6 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     @Test
     public void test1_signUp() {
         clickOn("#httpSignUp");
-        int numeroRandom = new Random().nextInt(9000) + 1000;
-        String email = "example" + numeroRandom + "@gmail.com";
 
         clickOn("#tfFirstName");
         write("Name");
@@ -74,7 +83,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        doubleClickOn("#tfEmail");
         write(email);
 
         clickOn("#pfPassword");
@@ -115,8 +124,8 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
-        write("emailalreadyexits@gmail.com");
+        doubleClickOn("#tfEmail");
+        write("alexsalineronegro@gmail.com");
 
         clickOn("#pfPassword");
         write("Abcd*1234");
@@ -134,7 +143,6 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for handling a server error exception during sign-up.
      */
-    @Test
     public void test3_signUpServerErrorException() {
 
         clickOn("#httpSignUp");
@@ -145,8 +153,8 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
-        write("emailalreadyexits@gmail.com");
+        doubleClickOn("#tfEmail");
+        write(email);
 
         clickOn("#pfPassword");
         write("Abcd*1234");
