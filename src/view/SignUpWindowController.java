@@ -407,14 +407,19 @@ public class SignUpWindowController {
 
                 if (userResponse != null) {
                     //Se muestra una alerta cuando el registro ha sido correcto.
-                    new Alert(Alert.AlertType.CONFIRMATION, "You have successfully registered", ButtonType.OK).showAndWait();
+                    new Alert(Alert.AlertType.CONFIRMATION, user.getName() + ", you have successfully registered.", ButtonType.OK).showAndWait();
                     //Se cierra la ventana de SignUp.
                     stage.close();
                 }
 
-            } catch (ServerErrorException | EmailExistsException ex) {
+            } catch (ServerErrorException ex) {
                 //Muestra la alerta con el error que viene del servidor
-                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+                String errorMessage = ex.getMessage().replace("{name}", user.getName());
+                new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK).showAndWait();
+                Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (EmailExistsException ex) {
+                String errorMessage = ex.getMessage().replace("{email}" , "'" + user.getEmail() + "'");
+                new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK).showAndWait();
                 Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
