@@ -3,8 +3,11 @@ package view;
 import application.Application;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -33,6 +36,12 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     //Creates a email with a random number
     private String email = "example" + randomNumber + "@gmail.com";
 
+    private PasswordField pfPassword = lookup("#pfPassword").query();
+    private PasswordField pfConfirmPassword = lookup("#pfConfirmPassword").query();
+
+    private TextField tfPassword = lookup("#tfPassword").query();
+    private TextField tfConfirmPassword = lookup("#tfConfirmPassword").query();
+
     /**
      * Set up the test environment before executing any test cases.
      *
@@ -45,7 +54,6 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(Application.class);
     }*/
-    
     @Override
     public void start(Stage stage) throws Exception {
         new Application().start(stage);
@@ -73,7 +81,6 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for the sign-up process.
      */
-    @Test
     public void test1_signUp() {
         clickOn("#httpSignUp");
 
@@ -114,7 +121,6 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for handling an email already exists exception during sign-up.
      */
-    @Test
     public void test2_signUpEmailAlreadyExitsException() {
         clickOn("#httpSignUp");
 
@@ -135,7 +141,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
         clickOn("#btnSignUp");
 
-        verifyThat("Email already exists. Please either try a different email or log in if you already have an account.", isVisible());
+        verifyThat("'" + lookup("#tfEmail").queryAs(TextField.class).getText() + "'" + "already exists. Please either try a different email or log in if you already have an account.", isVisible());
         clickOn("Aceptar");
 
     }
@@ -164,9 +170,113 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
         clickOn("#btnSignUp");
 
-        verifyThat("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
+        verifyThat(lookup("#tfFirstName").queryAs(TextField.class).getText() + " " + lookup("#tfLastName").queryAs(TextField.class).getText()  + ", we're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
         clickOn("Aceptar");
 
+    }
+
+    /**
+     * Test case for handling a max error exception during sign-up.
+     */
+    public void test4_signUpServerErrorExceptionMaxCapacity() {
+
+        clickOn("#httpSignUp");
+
+        clickOn("#tfFirstName");
+        write("Name");
+
+        clickOn("#tfLastName");
+        write("Surname");
+
+        doubleClickOn("#tfEmail");
+        write(email);
+
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+
+        clickOn("#pfConfirmPassword");
+        write("Abcd*1234");
+
+        clickOn("#btnSignUp");
+
+        verifyThat(lookup("#tfFirstName").queryAs(TextField.class).getText() + " " + lookup("#tfLastName").queryAs(TextField.class).getText() + ", the server is at max capacity, please try again later.", isVisible());
+        clickOn("Aceptar");
+
+    }
+
+    /**
+     * Test case for handling a timeout exception during sign-up.
+     */
+    @Test
+    public void test5_signUpServerErrorExceptionTimeOut() {
+
+        clickOn("#httpSignUp");
+
+        clickOn("#tfFirstName");
+        write("Name");
+
+        clickOn("#tfLastName");
+        write("Surname");
+
+        doubleClickOn("#tfEmail");
+        write(email);
+
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+
+        clickOn("#pfConfirmPassword");
+        write("Abcd*1234");
+
+        clickOn("#btnSignUp");
+
+        verifyThat(lookup("#tfFirstName").queryAs(TextField.class).getText() + " " + lookup("#tfLastName").queryAs(TextField.class).getText() + ", the connection has timed out. Our server is taking too long to respond.", isVisible());
+        clickOn("Aceptar");
+
+    }
+
+    
+    public void test6_HandelEyeToggleButtonAction() {
+        clickOn("#httpSignUp");
+
+        clickOn("#pfPassword");
+        write("abcd*1234");
+
+        clickOn("#tgbEye");
+
+        Assert.assertFalse(pfPassword.isVisible());
+        verifyThat("#tfPassword", isVisible());
+
+        clickOn("#tgbEye");
+
+        Assert.assertFalse(tfPassword.isVisible());
+        verifyThat("#pfPassword", isVisible());
+        clickOn("#pfPassword");
+        eraseText(9);
+
+        clickOn("#pfConfirmPassword");
+        write("abcd*1234");
+
+        clickOn("#tgbEye");
+
+        Assert.assertFalse(pfConfirmPassword.isVisible());
+        verifyThat("#tfConfirmPassword", isVisible());
+
+        clickOn("#tgbEye");
+
+        Assert.assertFalse(tfConfirmPassword.isVisible());
+        verifyThat("#pfConfirmPassword", isVisible());
+        clickOn("#pfConfirmPassword");
+        eraseText(9);
+    }
+
+    /**
+     * Testing the label when you close the window.
+     */
+    //@Test
+    public void test7_HandleOnActionExit() {
+        closeCurrentWindow();
+        verifyThat("Are you sure you want to exit the application?", isVisible());
+        clickOn("Aceptar");
     }
 
     /**
@@ -176,6 +286,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
      */
     @After
     public void tearDown() throws TimeoutException {
+        //Cleaning up and closing JavaFX stages.
         FxToolkit.cleanupStages();
     }
 
