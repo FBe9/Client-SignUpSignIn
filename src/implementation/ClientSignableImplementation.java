@@ -41,9 +41,9 @@ public class ClientSignableImplementation implements Signable {
             response = Client.sendRecieveMessage(request);
         } catch (ServerErrorException ex) {
             if (ex.getMessage().equalsIgnoreCase("connect timed out")) {
-                throw new ServerErrorException("Server error: " + ex.getMessage());
+                throw new ServerErrorException("{name}, the connection has timed out. Our server is taking too long to respond.");
             } else {
-                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+                throw new ServerErrorException("{name}, we're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
             }
         }
 
@@ -51,11 +51,11 @@ public class ClientSignableImplementation implements Signable {
         if (response != null) {
             switch (response.getMessage()) {
                 case EMAIL_EXITS_ERROR:
-                    throw new EmailExistsException("Email already exists. Please either try a different email or log in if you already have an account.");
+                    throw new EmailExistsException("{email} already exists. Please either try a different email or log in if you already have an account.");
                 case SERVER_CAPACITY_ERROR:
-                    throw new ServerErrorException("Server is at max capacity, please try again later.");
+                    throw new ServerErrorException("{name}, server is at max capacity, please try again later.");
                 case SERVER_ERROR:
-                    throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+                    throw new ServerErrorException("{name}, we're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
                 case RESPONSE_OK:
                     userResponse = response.getUser();
                     break;
@@ -91,9 +91,9 @@ public class ClientSignableImplementation implements Signable {
             rrs = Client.sendRecieveMessage(rr);
         } catch (ServerErrorException ex) {
             if (ex.getMessage().equalsIgnoreCase("connect timed out")) {
-                throw new ServerErrorException("Server error: " + ex.getMessage());
+                throw new ServerErrorException("The connection has timed out. Our server is taking too long to respond.");
             } else {
-                throw new ServerErrorException("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
+                throw new ServerErrorException("We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
             }
         }
 

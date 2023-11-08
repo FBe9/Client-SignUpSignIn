@@ -144,11 +144,11 @@
             <Tooltip text="Requirements: min. 8 characters, 1 capital letter, 1 number, 1 special character." />
          </tooltip></TextField>
       <Label fx:id="lblWrongName" alignment="TOP_CENTER" layoutX="615.0" layoutY="174.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
-      <Label fx:id="lblWrongEmail" alignment="TOP_CENTER" layoutX="612.0" layoutY="259.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" />
-      <Label fx:id="lblWrongPassword" alignment="TOP_CENTER" layoutX="615.0" layoutY="344.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" />
+      <Label fx:id="lblWrongEmail" alignment="TOP_CENTER" layoutX="612.0" layoutY="259.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
+      <Label fx:id="lblWrongPassword" alignment="TOP_CENTER" layoutX="615.0" layoutY="344.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
       <Label fx:id="lblWrongMobile" alignment="TOP_CENTER" layoutX="615.0" layoutY="606.0" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
       <Label fx:id="lblWrongMobileMax" alignment="TOP_CENTER" layoutX="435.0" layoutY="568.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="173.0" text="Exceeded character limit" textAlignment="CENTER" textFill="#f80000" visible="false">
-         <opaqueInsets>
+                 <opaqueInsets>
             <Insets />
          </opaqueInsets></Label>
       <Label fx:id="lblWrongEmailMax" alignment="TOP_CENTER" layoutX="440.0" layoutY="227.0" prefHeight="18.0" prefWidth="173.0" text="Exceeded character limit" textAlignment="CENTER" textFill="#f80000" visible="false">
@@ -161,5 +161,7 @@
             <Insets />
          </opaqueInsets>
       </Label>
+      <Label fx:id="lblWrongCityZip" alignment="TOP_CENTER" layoutX="613.0" layoutY="515.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="442.0" textAlignment="CENTER" textFill="#f80000" visible="false" />
+      
    </children>
 </AnchorPane>
