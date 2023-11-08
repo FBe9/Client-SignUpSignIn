@@ -2,10 +2,12 @@ package view;
 
 import exceptions.EmailExistsException;
 import exceptions.ServerErrorException;
+import exceptions.WrongCityFormatException;
 import exceptions.WrongEmailFormatException;
 import exceptions.WrongMobileFormatException;
 import exceptions.WrongNameFormatException;
 import exceptions.WrongPasswordFormatException;
+import exceptions.WrongZipFormatException;
 import factory.ClientFactory;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -14,7 +16,6 @@ import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,15 +43,7 @@ import models.User;
 public class SignUpWindowController {
 
     @FXML
-    private ImageView imgStar;
-    @FXML
-    private ImageView imgBackground;
-    @FXML
-    private Label lblFistName;
-    @FXML
     private TextField tfFirstName;
-    @FXML
-    private Label lblLastName;
     @FXML
     private TextField tfLastName;
     @FXML
@@ -91,6 +84,8 @@ public class SignUpWindowController {
     private Label lblWrongMobileMax;
     @FXML
     private Label lblWrongPasswordMax;
+    @FXML
+    private Label lblWrongCityZip;
 
     private Image openEye;
     private Image closeEye;
@@ -133,7 +128,7 @@ public class SignUpWindowController {
         tfZip.setText("");
         //Ventana modal
         stage.initModality(Modality.APPLICATION_MODAL);
-
+        //Establecer las imágenes para openEye y closeEye
         openEye = new Image("resources/eyeB.png", 25, 26, false, true);
         closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
@@ -184,33 +179,34 @@ public class SignUpWindowController {
     private void textPropertyChange(ObservableValue observable,
             String oldValue,
             String newValue) {
-        //Validar que los campos full name, email, password, confirm password están informados
+        //Validar que los campos full name, email, password, confirm password están informados.
         if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmail.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
                 && !pfPassword.getText().trim().equals(""))) {
             btnSignUp.setDisable(false);
         } else {
             btnSignUp.setDisable(true);
         }
-        //El texto del “pfPassword” se copiará en “tfPassword” y viceversa. Y el texto del “pfConfirmPassword” se copiará en el “tfConfirmPassword” y viceversa.
+
+        //Se comprobara cual de los campos passwords es visible y se copiara el texto del visible en el invisible en caso de que no tengan el mismo texto.
         if (pfPassword.isVisible() && !pfPassword.equals(tfPassword)) {
             tfPassword.setText(pfPassword.getText());
         } else if (tfPassword.isVisible()) {
             pfPassword.setText(tfPassword.getText());
         }
-
+        //Se comprobara cual de los campos passwords es visible y se copiara el texto del visible en el invisible en caso de que no tengan el mismo texto.
         if (pfConfirmPassword.isVisible() && !pfConfirmPassword.equals(tfConfirmPassword)) {
             tfConfirmPassword.setText(pfConfirmPassword.getText());
         } else if (tfCity.isVisible()) {
             pfConfirmPassword.setText(tfConfirmPassword.getText());
         }
 
-        //Validar que tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
+        //Validar que el campo email tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
         if (tfEmail.getText().trim().length() > MAX_LENGTH) {
             lblWrongEmailMax.setVisible(true);
         } else {
             lblWrongEmailMax.setVisible(false);
         }
-
+        //Validar que el campo contraseña tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
         if (tfPassword.getText().trim().length() > MAX_LENGTH || tfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfPassword.getText().trim().length() > MAX_LENGTH) {
             lblWrongPasswordMax.setVisible(true);
         } else {
@@ -242,9 +238,9 @@ public class SignUpWindowController {
             pfPassword.setVisible(false);
             tfPassword.setVisible(true);
             tfConfirmPassword.setVisible(true);
+
             //Si no está pulsado,  los PasswordField “pfPassword” y “pfConfirmPassword” se volverán visibles y los TextField “tfPassword” 
             //y “tfConfirmPassword” se volverán invisibles.  El icono del ToggleButton cambiará a un ojo abierto.
-
         } else {
             tgbEye.setGraphic(new ImageView(openEye));
             pfConfirmPassword.setVisible(true);
@@ -261,18 +257,22 @@ public class SignUpWindowController {
      */
     @FXML
     private void handlerSignUpButton(ActionEvent event) {
+        boolean flag = true;
         User user = null;
         try {
             // Validar que el campo de nombre (tfFirstName) y el de apellido (tfLastName) no contengan valores numéricos, si no, lanzaremos la excepción “WrongNameFormatException”.
             if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfFirstName.getText()) || !Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfLastName.getText())) {
                 throw new WrongNameFormatException("The name or last name cannot contain numbers.");
+                //Si cumple con el patrón correcto, verificamos si la etiqueta de error está visible.
             } else if (lblWrongName.isVisible()) {
+                //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos.
                 lblWrongName.setVisible(false);
-                lblWrongName.setText("");
 
             }
         } catch (WrongNameFormatException ex) {
+            //Establecemos el mensaje de error en la etiqueta.
             lblWrongName.setText(ex.getMessage());
+            //Mostramos la etiqueta de error.
             lblWrongName.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -281,12 +281,15 @@ public class SignUpWindowController {
             //Validar que el campo del email (tfEmail) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
             if (!Pattern.matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$", tfEmail.getText())) {
                 throw new WrongEmailFormatException("The email must have a valid format.");
+                //Si cumple con el patrón correcto, verificamos si la etiqueta de error está visible.
             } else if (lblWrongEmail.isVisible()) {
+                //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos.
                 lblWrongEmail.setVisible(false);
-                lblWrongEmail.setText("");
             }
         } catch (WrongEmailFormatException ex) {
+            //Establecemos el mensaje de error en la etiqueta.
             lblWrongEmail.setText(ex.getMessage());
+            //Mostramos la etiqueta de error.
             lblWrongEmail.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -294,38 +297,76 @@ public class SignUpWindowController {
         try {
             //Validar que ambos campos de las contraseñas (pfPassword y pfConfirmPassword) contengan la misma información y contengan mínimo 8 caracteres, de los cuales mínimo 1 mayúscula, 1 minuscula, y al menos 1 caracter especial, si no, lanzaremos la excepción “WrongPasswordFormatException”.
             if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfConfirmPassword.getText()) || !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfPassword.getText())) {
-
-                throw new WrongPasswordFormatException("Password doesn't match with required format");
+                throw new WrongPasswordFormatException("Password doesn't match with required format.");
             } else {
+                //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos.
                 lblWrongPassword.setVisible(false);
-                lblWrongPassword.setText("");
             }
         } catch (WrongPasswordFormatException ex) {
+            //Establecemos el mensaje de error en la etiqueta.
             lblWrongPassword.setText(ex.getMessage());
+            //Mostramos la etiqueta de error.
             lblWrongPassword.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             if (!pfConfirmPassword.getText().equals(pfPassword.getText())) {
-                throw new WrongPasswordFormatException("he passwords don't match.");
-            } else {
-                if (lblWrongPassword.getText().isEmpty()) {
-                    lblWrongPassword.setVisible(false);
-                    lblWrongPassword.setText("");
-                } else {
-                    lblWrongPassword.setText(lblWrongPassword.getText() + ".");
-                }
+                throw new WrongPasswordFormatException("The passwords don't match.");
             }
         } catch (WrongPasswordFormatException ex) {
-            if (lblWrongPassword.getText().isEmpty()) {
-                lblWrongPassword.setText("T" + ex.getMessage());
-            } else if (lblWrongPassword.getText().equals("Password doesn't match with required format")) {
-                lblWrongPassword.setText(lblWrongPassword.getText() + " and t" + ex.getMessage());
+            //Comprobamos si la label de error contiene ya el error anterior
+            if (lblWrongPassword.getText().equals("Password doesn't match with required format.")) {
+                //Establecemos un nuevo mensaje de error uniendo los dos errores
+                lblWrongPassword.setText(lblWrongPassword.getText().substring(0, lblWrongPassword.getText().length() - 1) + " and t" + ex.getMessage().substring(1, ex.getMessage().length()));
             } else {
+                //Si la label de error esta vacia cogemos el error de la excepción
                 lblWrongPassword.setText(ex.getMessage());
             }
+            //Mostramos la label de error
             lblWrongPassword.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongPassword.getText());
+        }
+
+        try {
+            if (!tfCity.getText().isEmpty()) {
+                if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfCity.getText())) {
+                    //Si el pattern no se cumple pondremos la flag a false. Validación que nos sirve para reutilizar la label de error.
+                    flag = false;
+                    throw new WrongCityFormatException("City cannot contain numbers.");
+                }
+                //Si cumple con el patrón correcto, verificamos si la etiqueta de error está visible.
+            } else if (lblWrongCityZip.isVisible()) {
+                //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos.
+                lblWrongCityZip.setVisible(false);
+            }
+        } catch (WrongCityFormatException ex) {
+            //Establecemos el mensaje de error en la etiqueta.
+            lblWrongCityZip.setText(ex.getMessage());
+            //Mostramos la etiqueta de error.
+            lblWrongCityZip.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (!tfZip.getText().isEmpty()) {
+                if (!Pattern.matches("^\\d{5}$", tfZip.getText())) {
+                    throw new WrongZipFormatException("Zip must have 5 numeric numbers.");
+                    //Validamos que no haya error en el campo tfCity para ocultar la label.
+                } else if (flag) {
+                    lblWrongCityZip.setVisible(false);
+                }
+            }
+        } catch (WrongZipFormatException ex) {
+            //Comprobamos si la label de error contiene ya el error anterior
+            if (lblWrongCityZip.getText().equals("City cannot contain numbers.")) {
+                //Establecemos un nuevo mensaje de error uniendo los dos errores
+                lblWrongCityZip.setText(lblWrongCityZip.getText().substring(0, lblWrongCityZip.getText().length() - 1) + " and z" + ex.getMessage().substring(1, ex.getMessage().length()));
+            } else {
+                //Si la label de error esta vacia cogemos el error de la excepción
+                lblWrongCityZip.setText(ex.getMessage());
+            }
+            //Mostramos la etiqueta de error.
+            lblWrongCityZip.setVisible(true);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, lblWrongCityZip.getText());
         }
 
         try {
@@ -333,23 +374,27 @@ public class SignUpWindowController {
             if (!tfMobile.getText().isEmpty()) {
                 if (!Pattern.matches("^[67]\\d{8}", tfMobile.getText())) {
                     throw new WrongMobileFormatException("The phone number must start with 6 or 7 and can only contain 9 numbers.");
+                    //Si cumple con el patrón correcto, verificamos si la etiqueta de error está visible.
+                } else if (lblWrongMobile.isVisible()) {
+                    //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos
+                    lblWrongMobile.setVisible(false);
                 }
-            } else if (lblWrongMobile.isVisible()) {
-                lblWrongMobile.setVisible(false);
             }
         } catch (WrongMobileFormatException ex) {
+            //Establecemos el mensaje de error en la etiqueta.
             lblWrongMobile.setText(ex.getMessage());
+            //Mostramos la etiqueta de error.
             lblWrongMobile.setVisible(true);
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
         if (!lblWrongEmail.isVisible() && !lblWrongMobile.isVisible() && !lblWrongName.isVisible() && !lblWrongPassword.isVisible() && !lblWrongPasswordMax.isVisible()
-                && !lblWrongEmailMax.isVisible()) {
+                && !lblWrongEmailMax.isVisible() && !lblWrongCityZip.isVisible()) {
             user = new User();
             user.setName(tfFirstName.getText() + " " + tfLastName.getText());
             user.setEmail(tfEmail.getText());
-            user.setMobile(tfMobile.getText()); 
+            user.setMobile(tfMobile.getText());
             user.setPassword(pfPassword.getText());
             user.setCity(tfCity.getText());
             user.setPrivilege(Privilege.USER);
@@ -357,15 +402,24 @@ public class SignUpWindowController {
             user.setZip(tfZip.getText());
 
             try {
-
+                //Recibir la respuesta de la implementación
                 User userResponse = ClientFactory.getImplementation().signUp(user);
 
                 if (userResponse != null) {
+                    //Se muestra una alerta cuando el registro ha sido correcto.
+                    new Alert(Alert.AlertType.CONFIRMATION, user.getName() + ", you have successfully registered.", ButtonType.OK).showAndWait();
+                    //Se cierra la ventana de SignUp.
                     stage.close();
                 }
 
-            } catch (ServerErrorException | EmailExistsException ex) {
-                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+            } catch (ServerErrorException ex) {
+                //Muestra la alerta con el error que viene del servidor
+                String errorMessage = ex.getMessage().replace("{name}", user.getName());
+                new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK).showAndWait();
+                Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (EmailExistsException ex) {
+                String errorMessage = ex.getMessage().replace("{email}" , "'" + user.getEmail() + "'");
+                new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK).showAndWait();
                 Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
