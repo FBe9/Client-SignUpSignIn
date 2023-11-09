@@ -38,6 +38,12 @@ import models.User;
  */
 public class SignInWindowController {
 
+    /**
+     * Default empty constructor for the class SignInWindowController.
+     */
+    public SignInWindowController() {
+    }
+
     //Text Fields
     @FXML
     private TextField tfEmail;
@@ -259,7 +265,7 @@ public class SignInWindowController {
     /**
      * It handles what happens when the hyperlink httpSignUp is pressed.
      *
-     * @param event
+     * @param event The event for the hyperlink.
      */
     @FXML
     public void handelSignUpHyperlink(ActionEvent event) {
@@ -305,6 +311,10 @@ public class SignInWindowController {
         }
     }
 
+    /**
+     * Sets the stage for the window.
+     * @param stage The stage information for the window.
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }

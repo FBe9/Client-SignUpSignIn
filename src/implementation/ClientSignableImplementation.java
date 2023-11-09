@@ -21,6 +21,12 @@ import models.User;
 public class ClientSignableImplementation implements Signable {
 
     /**
+     * Default constructor for the class ClientSignableImplementation.
+     */
+    public ClientSignableImplementation() {
+    }
+
+    /**
      * Sign up a user with the provided user information.
      *
      * @param user The User object containing user details for registration.

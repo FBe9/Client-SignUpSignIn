@@ -37,6 +37,12 @@ public class Client {
     }
 
     /**
+     * Default constructor for the class Client.
+     */
+    public Client() {
+    }
+
+    /**
      * Sends a request to the server and receives a response.
      *
      * @param request The request to be sent to the server.

@@ -42,6 +42,12 @@ import models.User;
  */
 public class SignUpWindowController {
 
+    /**
+     * Default empty constructor for the class SignUpWIndowController.
+     */
+    public SignUpWindowController() {
+    }
+
     @FXML
     private TextField tfFirstName;
     @FXML
@@ -92,13 +98,19 @@ public class SignUpWindowController {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view");
+    /**
+     * The default maximum length permitted for the fields.
+     */
     protected final int MAX_LENGTH = 300;
+    /**
+     * The maximum length permitted for the mobile phone field.
+     */
     protected final int MAX_LENGTH_MOBILE = 9;
 
     /**
      * Initialises the controller class.
      *
-     * @param root
+     * @param root The parent window.
      */
     public void initStage(Parent root) {
         LOGGER.info("Initialising Sign Up window.");
@@ -161,9 +173,9 @@ public class SignUpWindowController {
     }
 
     /**
-     * The stage for the window.
+     * Sets the stage for the Sign Up window.
      *
-     * @param stage
+     * @param stage The stage for the window.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -224,7 +236,7 @@ public class SignUpWindowController {
     /**
      * Handles the toggle event of the Eye Toggle Button.
      *
-     * @param event
+     * @param event The event for the eye toggle button handler.
      */
     @FXML
     private void handlertgbEye(ActionEvent event) {
@@ -429,7 +441,7 @@ public class SignUpWindowController {
     /**
      * Handles the exit event.
      *
-     * @param event
+     * @param event The event for the exit action.
      */
     public void handleOnActionExit(Event event) {
         try {
