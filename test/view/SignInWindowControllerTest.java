@@ -1,7 +1,6 @@
 package view;
 
 import application.Application;
-import exceptions.ServerErrorException;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -73,7 +72,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
         write("nerea@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
-        verifyThat("#btnAccept", isVisible());
+        verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");
         
         verifyThat("#pnLogged", isVisible());
@@ -94,7 +93,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
         write("usernotexit@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
-        verifyThat("#btnAccept", isVisible());
+        verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");       
         
         assertEquals(lblError.getText(), "Unknown user, please change the login or the password.");
@@ -114,7 +113,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
         write("nerea@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
-        verifyThat("#btnAccept", isVisible());
+        verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");
         
         verifyThat("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
