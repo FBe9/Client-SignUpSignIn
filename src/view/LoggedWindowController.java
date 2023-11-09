@@ -35,6 +35,12 @@ public class LoggedWindowController {
     private static User user;
 
     /**
+     * Default empty constructor for the class LoggedWIndowController.
+     */
+    public LoggedWindowController() {
+    }
+
+    /**
      * Label for the welcome messages.
      */
     @FXML

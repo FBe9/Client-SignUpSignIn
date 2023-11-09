@@ -13,6 +13,12 @@ public class ClientFactory {
     private static Signable implementation;
 
     /**
+     * Default constructor for the class ClientFactory.
+     */
+    public ClientFactory() {
+    }
+
+    /**
      * This method returns a new implementation from the Signable interface.
      *
      * @return an object that implements the interface
