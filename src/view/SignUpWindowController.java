@@ -436,7 +436,7 @@ public class SignUpWindowController {
             LOGGER.info("EXIT pressed.");
             //Pedir confirmación al usuario para salir:
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Are you sure you want to exit?",
+                   "Are you sure you want to exit the application?",
                     ButtonType.OK, ButtonType.CANCEL);
             Optional<ButtonType> result = alert.showAndWait();
 

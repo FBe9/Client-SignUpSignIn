@@ -134,7 +134,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <ToggleButton fx:id="tgbEye" layoutX="1069.0" layoutY="308.0" mnemonicParsing="false" onAction="#handlertgbEye" prefHeight="26.0" prefWidth="42.0" style="-fx-background-color: transparent;" />
+      <ToggleButton fx:id="tgbEye" layoutX="1062.0" layoutY="302.0" mnemonicParsing="false" onAction="#handlertgbEye" prefHeight="26.0" prefWidth="42.0" style="-fx-background-color: transparent;"/>
       <TextField fx:id="tfPassword" alignment="BOTTOM_LEFT" layoutX="613.0" layoutY="308.0" prefHeight="0.0" prefWidth="221.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3 #e0e0d3;" visible="false">
          <tooltip>
             <Tooltip text="Requirements: min. 8 characters, 1 capital letter, 1 number, 1 special character." />
