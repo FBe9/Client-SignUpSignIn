@@ -21,6 +21,12 @@ import models.User;
 public class ClientSignableImplementation implements Signable {
 
     /**
+     * Default constructor for the class ClientSignableImplementation.
+     */
+    public ClientSignableImplementation() {
+    }
+
+    /**
      * Sign up a user with the provided user information.
      *
      * @param user The User object containing user details for registration.
@@ -112,7 +118,7 @@ public class ClientSignableImplementation implements Signable {
                 case SERVER_CAPACITY_ERROR:
                     throw new ServerErrorException("Server is at max capacity, please try again later.");
                 case SERVER_ERROR:
-                    throw new ServerErrorException("It occurs an error at the server, plese try again later.");
+                    throw new ServerErrorException("We're experiencing technical difficulties. Please try again later or contact our support team for assistance.");
             }
         }
 

@@ -9,16 +9,22 @@ import javafx.stage.Stage;
 import view.*;
 
 /**
- * Main application class.
+ * Main application class. Start the application.
  *
  * @author Nerea
  */
 public class Application extends javafx.application.Application {
 
     /**
+     * Default constructor for the class Application.
+     */
+    public Application() {
+    }
+
+    /**
      * Start method for the Application.
      *
-     * @param stage
+     * @param stage The stage for the window.
      */
     @Override
     public void start(Stage stage) {

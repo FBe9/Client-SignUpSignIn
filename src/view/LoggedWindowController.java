@@ -32,6 +32,13 @@ public class LoggedWindowController {
      */
     private static final Logger LOGGER = Logger.getLogger("logged view");
     private Stage stage;
+    private static User user;
+
+    /**
+     * Default empty constructor for the class LoggedWIndowController.
+     */
+    public LoggedWindowController() {
+    }
 
     /**
      * Label for the welcome messages.
@@ -65,7 +72,7 @@ public class LoggedWindowController {
     public void initStage(Parent root, User user) {
         try {
             LOGGER.info("Initializing the logged window with the client: "+user.getName());
-
+            this.user = user;
             //Set the user that log in to the messages.
             lblHellou.setText("Hello " + user.getName() + " to our Application.");
 
@@ -115,7 +122,7 @@ public class LoggedWindowController {
     private void handelLogOutButtonAction(ActionEvent event) {
         try {
             //Ask user for confirmation on exit
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to log out?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, user.getName()+", are you sure that you want to log out?");
             Optional<ButtonType> action = alert.showAndWait();
 
             //If OK to exit 
@@ -159,7 +166,7 @@ public class LoggedWindowController {
     private void handelExitButtonAction(Event event) {
         try {
             //Ask user for confirmation on exit
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure that you want to close the application?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, user.getName()+", are you sure that you want to close the application?");
             Optional<ButtonType> action = alert.showAndWait();
 
             //If OK to exit

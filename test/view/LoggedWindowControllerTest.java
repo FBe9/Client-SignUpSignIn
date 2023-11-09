@@ -48,9 +48,9 @@ public class LoggedWindowControllerTest extends ApplicationTest {
         verifyThat("Hello Nerea Apellido to our Application.", isVisible());
 
         clickOn("#btnLogOut");
-        verifyThat("Are you sure that you want to log out?", isVisible());
+        verifyThat("Nerea Apellido, are you sure that you want to log out?", isVisible());
         clickOn("Aceptar");
-        
+
         verifyThat("#signInPane", isVisible());
     }
 
@@ -66,13 +66,13 @@ public class LoggedWindowControllerTest extends ApplicationTest {
         write("Abcd*1234");
         verifyThat("#btnAccept", isVisible());
         clickOn("#btnAccept");
-        
+
         verifyThat("#pnLogged", isVisible());
         verifyThat("Hello Nerea Apellido to our Application.", isVisible());
 
         //clickOn("tpMenu");
         clickOn("#btnExit");
-        verifyThat("Are you sure that you want to close the application?", isVisible());
+        verifyThat("Nerea Apellido, are you sure that you want to close the application?", isVisible());
         clickOn("Aceptar");
     }
 
