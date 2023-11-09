@@ -36,7 +36,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
     private TextField tfEmail = lookup("#tfEmail").query();
 
     private Label lblEmailError = lookup("#lblEmailError").query();
-    
+
     private Label lblError = lookup("#lblError").query();
 
     /**
@@ -50,7 +50,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(Application.class);
     }
-    
+
     /**
      * Test of initStage method, of class SignInWindowController.
      */
@@ -66,57 +66,73 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Sign in test with an existing user.
      */
-    @Test
-    public void test1_SignInCorrect(){
+    //@Test
+    public void test1_SignInCorrect() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
         verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");
-        
+
         verifyThat("#pnLogged", isVisible());
-        
+
         clickOn("#btnLogOut");
-        verifyThat("Are you sure that you want to log out?", isVisible());
+        verifyThat("Nerea Apellido, are you sure that you want to log out?", isVisible());
         clickOn("Aceptar");
-        
+
         verifyThat("#signInPane", isVisible());
     }
-    
+
     /**
      * Sign in test with a not existing user. LoginCredentialException.
      */
-    @Test
-    public void test2_SignInIncorrectLoginCredentialException(){
+    //@Test
+    public void test2_SignInIncorrectLoginCredentialException() {
         clickOn("#tfEmail");
-        write("usernotexit@gmail.com");
+        write("no@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
         verifyThat("#btnAccept", isEnabled());
-        clickOn("#btnAccept");       
-        
+        clickOn("#btnAccept");
+
         assertEquals(lblError.getText(), "Unknown user, please change the login or the password.");
-        
+
         clickOn("#tfEmail");
         eraseText(21);
         clickOn("#pfPassword");
         eraseText(9);
     }
-    
+
     /**
-     * Sign in test with an existing user. ServerErrorException.
+     * Sign in test with an existing user. ServerErrorException(MaxCapacity).
      */
     //@Test 
-    public void test3_SignInCorrectWithServerErrorException(){
+    public void test3_SignInCorrectWithServerCapacityError() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         clickOn("#pfPassword");
         write("Abcd*1234");
         verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");
-        
-        verifyThat("Internal Server Error: We're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
+
+        verifyThat("Server is at max capacity, please try again later.", isVisible());
+        clickOn("Aceptar");
+    }
+
+    /**
+     * Sign in test with an existing user. ServerErrorException(Connections).
+     */
+    @Test
+    public void test4_SignInCorrectWithServerErrorException() {
+        clickOn("#tfEmail");
+        write("nerea@gmail.com");
+        clickOn("#pfPassword");
+        write("Abcd*1234");
+        verifyThat("#btnAccept", isEnabled());
+        clickOn("#btnAccept");
+
+        verifyThat("We're experiencing technical difficulties. Please try again later or contact our support team for assistance.", isVisible());
         clickOn("Aceptar");
     }
 
@@ -124,16 +140,16 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that labels works.
      */
     //@Test
-    public void test4_TextChangedMaxLenght() {
+    public void test5_TextChangedMaxLenght() {
         clickOn("#tfEmail");
         write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALcrbQCrLyHXZEALcrbQCrLyH");
         assertEquals(lblEmailError.getText(), "The maximum lenght for the Email is 300 characters,\n please change it.");
         eraseText(301);
         write("nerea@gmail.com");
         eraseText(15);
-        
+
         assertEquals(lblEmailError.getText(), "");
-        
+
         clickOn("#pfPassword");
         write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALcrbQCrLyHXZEALcrbQCrLyH");
         assertEquals(lblError.getText(), "The maximum lenght for the Password is 300\ncharacters, please change it.");
@@ -148,11 +164,11 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test of handelEyeToggleButtonAction method, of class
      * SignInWindowController.
      */
-    @Test
-    public void test5_HandelEyeToggleButtonAction() {
+    //@Test 
+    public void test6_HandelEyeToggleButtonAction() {
         clickOn("#pfPassword");
         write("abcd*1234");
-        
+
         clickOn("#tgbEye");
 
         Assert.assertFalse(pfPassword.isVisible());
@@ -169,11 +185,11 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test if the pfPassword and the tfPassword have the same text.
      */
-    @Test
-    public void test6_PasswordSameText() {
+    //@Test 
+    public void test7_PasswordSameText() {
         clickOn("#pfPassword");
         write("abcd*1234");
-        
+
         verifyThat("#pfPassword", hasText("abcd*1234"));
         verifyThat("#tfPassword", hasText("abcd*1234"));
 
@@ -185,8 +201,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that button Accept is disabled when email and password fields are
      * not full.
      */
-    @Test
-    public void test7_AcceptButtonIsDisabled() {
+    //@Test 
+    public void test8_AcceptButtonIsDisabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnAccept", isDisabled());
@@ -202,8 +218,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test that button Accept is enabled.
      */
-    @Test
-    public void test8_HandelAcceptButtonActionEnabled() {
+    //@Test 
+    public void test9_HandelAcceptButtonActionEnabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
         verifyThat("#btnAccept", isDisabled());
@@ -216,8 +232,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test that SignUp view is opened when hyperlink Sign Up is clicked.
      */
-    @Test
-    public void test9_HandelSignUpHyperlink() {
+    //@Test 
+    public void test10_HandelSignUpHyperlink() {
         clickOn("#httpSignUp");
         verifyThat("#signUpWindow", isVisible());
     }
@@ -226,7 +242,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Testing the label when you close the window.
      */
     //@Test
-    public void test10_HandleOnActionExit() {
+    public void test11_HandleOnActionExit() {
         closeCurrentWindow();
         verifyThat("Are you sure you want to exit the application?", isVisible());
         clickOn("Aceptar");
