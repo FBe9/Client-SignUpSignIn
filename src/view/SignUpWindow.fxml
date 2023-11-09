@@ -46,7 +46,7 @@
             <Font name="Goudy Old Style" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="tfEmail" alignment="BOTTOM_CENTER" layoutX="614.0" layoutY="223.0" prefHeight="27.0" prefWidth="442.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3;">
+      <TextField fx:id="tfEmailSignUp" alignment="BOTTOM_CENTER" layoutX="614.0" layoutY="223.0" prefHeight="27.0" prefWidth="442.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3;">
          <tooltip>
             <Tooltip text="Requirements: [usrename]@[domain-name].[domain]" />
          </tooltip></TextField>
@@ -55,7 +55,7 @@
             <Font name="Goudy Old Style" size="18.0" />
          </font>
       </Label>
-      <PasswordField fx:id="pfPassword" layoutX="613.0" layoutY="308.0" prefHeight="0.0" prefWidth="221.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3 #e0e0d3;">
+      <PasswordField fx:id="pfPasswordSignUp" layoutX="613.0" layoutY="308.0" prefHeight="0.0" prefWidth="221.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3 #e0e0d3;">
          <tooltip>
             <Tooltip text="Requirements: min. 8 characters, 1 capital letter, 1 number, 1 special character." />
          </tooltip></PasswordField>
@@ -134,8 +134,8 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <ToggleButton fx:id="tgbEye" layoutX="1062.0" layoutY="302.0" mnemonicParsing="false" onAction="#handlertgbEye" prefHeight="26.0" prefWidth="42.0" style="-fx-background-color: transparent;"/>
-      <TextField fx:id="tfPassword" alignment="BOTTOM_LEFT" layoutX="613.0" layoutY="308.0" prefHeight="0.0" prefWidth="221.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3 #e0e0d3;" visible="false">
+      <ToggleButton fx:id="tgbEyeSignUp" layoutX="1062.0" layoutY="302.0" mnemonicParsing="false" onAction="#handlertgbEye" prefHeight="26.0" prefWidth="42.0" style="-fx-background-color: transparent;"/>
+      <TextField fx:id="tfPasswordSignUp" alignment="BOTTOM_LEFT" layoutX="613.0" layoutY="308.0" prefHeight="0.0" prefWidth="221.0" style="-fx-border-radius: 5; -fx-background-color: #fafaf2; -fx-border-color: #e0e0d3 #e0e0d3;" visible="false">
          <tooltip>
             <Tooltip text="Requirements: min. 8 characters, 1 capital letter, 1 number, 1 special character." />
          </tooltip></TextField>

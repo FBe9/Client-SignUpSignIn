@@ -3,6 +3,7 @@ package view;
 import application.Application;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
+import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.After;
@@ -35,21 +36,17 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     private String email = "example" + randomNumber + "@gmail.com";
 
     /**
-     * Set up the test environment before executing any test cases.
+     * Initializes the application to perform the tests.
      *
-     * @throws TimeoutException if there's a timeout while setting up the JavaFX
+     * @param stage The JavaFX Stage object provided by the system to start the
      * application.
+     * @throws Exception If an exception occurs while starting the application.
      */
-    /*
-    @Before
-    public void setUp() throws TimeoutException {
-        FxToolkit.registerPrimaryStage();
-        FxToolkit.setupApplication(Application.class);
-    }*/
     @Override
     public void start(Stage stage) throws Exception {
         new Application().start(stage);
         clickOn("#httpSignUp");
+
     }
 
     /**
@@ -59,11 +56,11 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     public void test0_initStage() {
         verifyThat("#tfFirstName", hasText(""));
         verifyThat("#tfLastName", hasText(""));
-        verifyThat("#tfEmail", hasText(""));
-        verifyThat("#tfPassword", hasText(""));
+        verifyThat("#tfEmailSignUp", hasText(""));
+        verifyThat("#tfPasswordSignUp", hasText(""));
         verifyThat("#tfConfirmPassword", hasText(""));
-        verifyThat("#pfPassword", hasText(""));
-        verifyThat("#pfPassword", hasText(""));
+        verifyThat("#pfPasswordSignUp", hasText(""));
+        verifyThat("#pfConfirmPassword", hasText(""));
         verifyThat("#tfStreet", hasText(""));
         verifyThat("#tfZip", hasText(""));
         verifyThat("#tfMobile", hasText(""));
@@ -73,7 +70,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for the sign-up process.
      */
-    @Test
+   @Test
     public void test1_signUp() {
 
         clickOn("#tfFirstName");
@@ -82,10 +79,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        clickOn("#tfEmailSignUp");
         write(email);
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
 
         clickOn("#pfConfirmPassword");
@@ -122,10 +119,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        clickOn("#tfEmailSignUp");
         write("igarzon@gmail.com");
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
 
         clickOn("#pfConfirmPassword");
@@ -133,7 +130,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
         clickOn("#btnSignUp");
 
-        verifyThat("'" + lookup("#tfEmail").queryAs(TextField.class).getText() + "'" + " already exists. Please either try a different email or log in if you already have an account.", isVisible());
+        verifyThat("'" + lookup("#tfEmailSignUp").queryAs(TextField.class).getText() + "'" + " already exists. Please either try a different email or log in if you already have an account.", isVisible());
         clickOn("Aceptar");
 
     }
@@ -141,7 +138,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for handling a server error exception during sign-up.
      */
-    @Test
+   @Test
     public void test3_signUpServerErrorException() {
         clickOn("#tfFirstName");
         write("Name");
@@ -149,10 +146,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        clickOn("#tfEmailSignUp");
         write(email);
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
 
         clickOn("#pfConfirmPassword");
@@ -177,10 +174,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        clickOn("#tfEmailSignUp");
         write(email);
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
 
         clickOn("#pfConfirmPassword");
@@ -204,10 +201,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#tfLastName");
         write("Surname");
 
-        clickOn("#tfEmail");
+        clickOn("#tfEmailSignUp");
         write(email);
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
 
         clickOn("#pfConfirmPassword");
@@ -223,30 +220,30 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     /**
      * Test case for verify the behavior of the "Eye" toggle button.
      */
-    //@Test
+    @Test
     public void test6_HandelEyeToggleButtonAction() {
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("abcd*1234");
 
-        clickOn("#tgbEye");
+        clickOn("#tgbEyeSignUp");
 
-        verifyThat("#pfPassword", isInvisible());
-        verifyThat("#tfPassword", isVisible());
+        verifyThat("#pfPasswordSignUp", isInvisible());
+        verifyThat("#tfPasswordSignUp", isVisible());
 
-        clickOn("#tgbEye");
+        clickOn("#tgbEyeSignUp");
 
-        verifyThat("#tfPassword", isInvisible());
-        verifyThat("#pfPassword", isVisible());
+        verifyThat("#tfPasswordSignUp", isInvisible());
+        verifyThat("#pfPasswordSignUp", isVisible());
 
         clickOn("#pfConfirmPassword");
         write("abcd*1234");
 
-        clickOn("#tgbEye");
+        clickOn("#tgbEyeSignUp");
 
         verifyThat("#pfConfirmPassword", isInvisible());
         verifyThat("#tfConfirmPassword", isVisible());
 
-        clickOn("#tgbEye");
+        clickOn("#tgbEyeSignUp");
 
         verifyThat("#tfConfirmPassword", isInvisible());
         verifyThat("#pfConfirmPassword", isVisible());
@@ -257,13 +254,13 @@ public class SignUpWindowControllerTest extends ApplicationTest {
      * Test case to check if the passwords fields have the same text that the
      * text field
      */
-    //@Test
+   @Test
     public void test7_PasswordSameText() {
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("abcd*1234");
 
-        verifyThat("#pfPassword", hasText("abcd*1234"));
-        verifyThat("#tfPassword", hasText("abcd*1234"));
+        verifyThat("#pfPasswordSignUp", hasText("abcd*1234"));
+        verifyThat("#tfPasswordSignUp", hasText("abcd*1234"));
 
         clickOn("#pfConfirmPassword");
         write("abcd*1234");
@@ -273,9 +270,10 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     }
 
     /**
-     * Test Signup button functionality to verify if it is enabled with the mandatory fields or not.
+     * Test Signup button functionality to verify if it is enabled with the
+     * mandatory fields or not.
      */
-    //@Test
+    @Test
     public void test8_SignUpButton() {
 
         clickOn("#tfFirstName");
@@ -286,11 +284,11 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         write("Surname");
         verifyThat("#btnSignUp", isDisabled());
 
-        clickOn("#tfEmail");
-        write(email);
+        clickOn("#tfEmailSignUp");
+        write("no@gmail.com");
         verifyThat("#btnSignUp", isDisabled());
 
-        clickOn("#pfPassword");
+        clickOn("#pfPasswordSignUp");
         write("Abcd*1234");
         verifyThat("#btnSignUp", isDisabled());
 
@@ -299,15 +297,15 @@ public class SignUpWindowControllerTest extends ApplicationTest {
 
         verifyThat("#btnSignUp", isEnabled());
 
-        clickOn("#pfConfirmPassword");
+        doubleClickOn("#pfConfirmPassword");
         eraseText(9);
         verifyThat("#btnSignUp", isDisabled());
 
-        doubleClickOn("#pfPassword");
+        doubleClickOn("#pfPasswordSignUp");
         eraseText(9);
         verifyThat("#btnSignUp", isDisabled());
 
-        doubleClickOn("#tfEmail");
+        doubleClickOn("#tfEmailSignUp");
         eraseText(21);
         verifyThat("#btnSignUp", isDisabled());
 
@@ -322,11 +320,21 @@ public class SignUpWindowControllerTest extends ApplicationTest {
     }
 
     /**
-     * Testing the label when you close the window.
+     * Testing the alert when you close the window.
      */
     @Test
     public void test9_HandleOnActionExit() {
         closeCurrentWindow();
+        verifyThat("Are you sure you want to exit the application?", isVisible());
+        clickOn("Aceptar");
+    }
+
+    /**
+     * Testing the alert when you click in cancel button.
+     */
+    @Test
+    public void test91_handleCancelButton() {
+        clickOn("#btnCancel");
         verifyThat("Are you sure you want to exit the application?", isVisible());
         clickOn("Aceptar");
     }

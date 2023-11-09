@@ -53,9 +53,9 @@ public class SignUpWindowController {
     @FXML
     private TextField tfLastName;
     @FXML
-    private TextField tfEmail;
+    private TextField tfEmailSignUp;
     @FXML
-    private PasswordField pfPassword;
+    private PasswordField pfPasswordSignUp;
     @FXML
     private PasswordField pfConfirmPassword;
     @FXML
@@ -69,7 +69,7 @@ public class SignUpWindowController {
     @FXML
     private Button btnSignUp;
     @FXML
-    private TextField tfPassword;
+    private TextField tfPasswordSignUp;
     @FXML
     private TextField tfConfirmPassword;
     @FXML
@@ -81,7 +81,7 @@ public class SignUpWindowController {
     @FXML
     private Label lblWrongMobile;
     @FXML
-    private ToggleButton tgbEye;
+    private ToggleButton tgbEyeSignUp;
     @FXML
     private Button btnCancel;
     @FXML
@@ -129,13 +129,13 @@ public class SignUpWindowController {
         //Vaciar el contenido de todos los campos.
         tfCity.setText("");
         pfConfirmPassword.setText("");
-        pfPassword.setText("");
-        tfEmail.setText("");
+        pfPasswordSignUp.setText("");
+        tfEmailSignUp.setText("");
         tfFirstName.setText("");
         tfLastName.setText("");
         tfMobile.setText("");
         tfConfirmPassword.setText("");
-        tfPassword.setText("");
+        tfPasswordSignUp.setText("");
         tfStreet.setText("");
         tfZip.setText("");
         //Ventana modal
@@ -145,7 +145,7 @@ public class SignUpWindowController {
         closeEye = new Image("resources/closeEyeB.png", 25, 26, false, true);
 
         //El icono del ToggleButton será el del ojo abierto. 
-        tgbEye.setGraphic(new ImageView(openEye));
+        tgbEyeSignUp.setGraphic(new ImageView(openEye));
         stage.getIcons().add(new Image("resources/blackStar.png"));
 
         //El botón signUp es el botón por defecto.
@@ -155,15 +155,15 @@ public class SignUpWindowController {
 
         //Asignar Actions y Listeners
         btnSignUp.setOnAction(this::handlerSignUpButton);
-        tgbEye.setOnAction(this::handlertgbEye);
+        tgbEyeSignUp.setOnAction(this::handlertgbEye);
         stage.setOnCloseRequest(this::handleOnActionExit);
         btnCancel.setOnAction(this::handleOnActionExit);
-        tfEmail.textProperty().addListener(this::textPropertyChange);
+        tfEmailSignUp.textProperty().addListener(this::textPropertyChange);
         tfFirstName.textProperty().addListener(this::textPropertyChange);
         tfLastName.textProperty().addListener(this::textPropertyChange);
-        tfPassword.textProperty().addListener(this::textPropertyChange);
+        tfPasswordSignUp.textProperty().addListener(this::textPropertyChange);
         tfConfirmPassword.textProperty().addListener(this::textPropertyChange);
-        pfPassword.textProperty().addListener(this::textPropertyChange);
+        pfPasswordSignUp.textProperty().addListener(this::textPropertyChange);
         pfConfirmPassword.textProperty().addListener(this::textPropertyChange);
         tfMobile.textProperty().addListener(this::textPropertyChange);
 
@@ -192,18 +192,18 @@ public class SignUpWindowController {
             String oldValue,
             String newValue) {
         //Validar que los campos full name, email, password, confirm password están informados.
-        if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmail.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
-                && !pfPassword.getText().trim().equals(""))) {
+        if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmailSignUp.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
+                && !pfPasswordSignUp.getText().trim().equals(""))) {
             btnSignUp.setDisable(false);
         } else {
             btnSignUp.setDisable(true);
         }
 
         //Se comprobara cual de los campos passwords es visible y se copiara el texto del visible en el invisible en caso de que no tengan el mismo texto.
-        if (pfPassword.isVisible() && !pfPassword.equals(tfPassword)) {
-            tfPassword.setText(pfPassword.getText());
-        } else if (tfPassword.isVisible()) {
-            pfPassword.setText(tfPassword.getText());
+        if (pfPasswordSignUp.isVisible() && !pfPasswordSignUp.equals(tfPasswordSignUp)) {
+            tfPasswordSignUp.setText(pfPasswordSignUp.getText());
+        } else if (tfPasswordSignUp.isVisible()) {
+            pfPasswordSignUp.setText(tfPasswordSignUp.getText());
         }
         //Se comprobara cual de los campos passwords es visible y se copiara el texto del visible en el invisible en caso de que no tengan el mismo texto.
         if (pfConfirmPassword.isVisible() && !pfConfirmPassword.equals(tfConfirmPassword)) {
@@ -213,13 +213,13 @@ public class SignUpWindowController {
         }
 
         //Validar que el campo email tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
-        if (tfEmail.getText().trim().length() > MAX_LENGTH) {
+        if (tfEmailSignUp.getText().trim().length() > MAX_LENGTH) {
             lblWrongEmailMax.setVisible(true);
         } else {
             lblWrongEmailMax.setVisible(false);
         }
         //Validar que el campo contraseña tenga un máximo de 300 caracteres. Si el usuario excede este límite se le informará mediante un texto hasta que el límite de caracteres sea menor o igual al correspondiente.
-        if (tfPassword.getText().trim().length() > MAX_LENGTH || tfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfPassword.getText().trim().length() > MAX_LENGTH) {
+        if (tfPasswordSignUp.getText().trim().length() > MAX_LENGTH || tfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfConfirmPassword.getText().trim().length() > MAX_LENGTH || pfPasswordSignUp.getText().trim().length() > MAX_LENGTH) {
             lblWrongPasswordMax.setVisible(true);
         } else {
             lblWrongPasswordMax.setVisible(false);
@@ -240,24 +240,24 @@ public class SignUpWindowController {
      */
     @FXML
     private void handlertgbEye(ActionEvent event) {
-        ImageView currentImage = (ImageView) tgbEye.getGraphic();
-        //Si está pulsado, los PasswordField “pfPassword” y “pfConfirmPassword” se volverán invisibles y los TextField “tfPassword” 
+        ImageView currentImage = (ImageView) tgbEyeSignUp.getGraphic();
+        //Si está pulsado, los PasswordField “pfPasswordSignUp” y “pfConfirmPassword” se volverán invisibles y los TextField “tfPasswordSignUp” 
         // y “tfConfirmPassword” se volverán visibles.  El icono del ToggleButton cambiará a un ojo tachado.
 
         if (currentImage.getImage() == openEye) {
-            tgbEye.setGraphic(new ImageView(closeEye));
+            tgbEyeSignUp.setGraphic(new ImageView(closeEye));
             pfConfirmPassword.setVisible(false);
-            pfPassword.setVisible(false);
-            tfPassword.setVisible(true);
+            pfPasswordSignUp.setVisible(false);
+            tfPasswordSignUp.setVisible(true);
             tfConfirmPassword.setVisible(true);
 
-            //Si no está pulsado,  los PasswordField “pfPassword” y “pfConfirmPassword” se volverán visibles y los TextField “tfPassword” 
+            //Si no está pulsado,  los PasswordField “pfPasswordSignUp” y “pfConfirmPassword” se volverán visibles y los TextField “tfPasswordSignUp” 
             //y “tfConfirmPassword” se volverán invisibles.  El icono del ToggleButton cambiará a un ojo abierto.
         } else {
-            tgbEye.setGraphic(new ImageView(openEye));
+            tgbEyeSignUp.setGraphic(new ImageView(openEye));
             pfConfirmPassword.setVisible(true);
-            pfPassword.setVisible(true);
-            tfPassword.setVisible(false);
+            pfPasswordSignUp.setVisible(true);
+            tfPasswordSignUp.setVisible(false);
             tfConfirmPassword.setVisible(false);
         }
     }
@@ -290,8 +290,8 @@ public class SignUpWindowController {
         }
         try {
 
-            //Validar que el campo del email (tfEmail) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
-            if (!Pattern.matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$", tfEmail.getText())) {
+            //Validar que el campo del email (tfEmailSignUp) cumpla con el formato correcto, si no, lanzaremos la excepción “WrongEmailFormatException”.
+            if (!Pattern.matches("^[a-zA-Z0-9-._%+-]+@[a-zA-Z0-0.-]+.(com|org|cn|net|gov|eus|es|io)+$", tfEmailSignUp.getText())) {
                 throw new WrongEmailFormatException("The email must have a valid format.");
                 //Si cumple con el patrón correcto, verificamos si la etiqueta de error está visible.
             } else if (lblWrongEmail.isVisible()) {
@@ -307,8 +307,8 @@ public class SignUpWindowController {
         }
 
         try {
-            //Validar que ambos campos de las contraseñas (pfPassword y pfConfirmPassword) contengan la misma información y contengan mínimo 8 caracteres, de los cuales mínimo 1 mayúscula, 1 minuscula, y al menos 1 caracter especial, si no, lanzaremos la excepción “WrongPasswordFormatException”.
-            if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfConfirmPassword.getText()) || !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfPassword.getText())) {
+            //Validar que ambos campos de las contraseñas (pfPasswordSignUp y pfConfirmPassword) contengan la misma información y contengan mínimo 8 caracteres, de los cuales mínimo 1 mayúscula, 1 minuscula, y al menos 1 caracter especial, si no, lanzaremos la excepción “WrongPasswordFormatException”.
+            if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfConfirmPassword.getText()) || !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-])[A-Za-z\\d@$!%*?&._-]{8,}$", pfPasswordSignUp.getText())) {
                 throw new WrongPasswordFormatException("Password doesn't match with required format.");
             } else {
                 //Si la etiqueta se había mostrado pero el error ya no existe, la ocultamos.
@@ -322,7 +322,7 @@ public class SignUpWindowController {
             Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            if (!pfConfirmPassword.getText().equals(pfPassword.getText())) {
+            if (!pfConfirmPassword.getText().equals(pfPasswordSignUp.getText())) {
                 throw new WrongPasswordFormatException("The passwords don't match.");
             }
         } catch (WrongPasswordFormatException ex) {
@@ -405,9 +405,9 @@ public class SignUpWindowController {
                 && !lblWrongEmailMax.isVisible() && !lblWrongCityZip.isVisible()) {
             user = new User();
             user.setName(tfFirstName.getText() + " " + tfLastName.getText());
-            user.setEmail(tfEmail.getText());
+            user.setEmail(tfEmailSignUp.getText());
             user.setMobile(tfMobile.getText());
-            user.setPassword(pfPassword.getText());
+            user.setPassword(pfPasswordSignUp.getText());
             user.setCity(tfCity.getText());
             user.setPrivilege(Privilege.USER);
             user.setStreet(tfStreet.getText());
