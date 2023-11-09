@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import view.*;
 
 /**
- * Main application class.
+ * Main application class. Start the application.
  *
  * @author Nerea
  */
