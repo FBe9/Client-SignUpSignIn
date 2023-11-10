@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pnLogged" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoggedWindowController">
+<Pane fx:id="pnLogged" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoggedWindowController">
    <children>
-      <ImageView fitHeight="306.0" fitWidth="545.0" layoutX="354.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="318.0" fitWidth="574.0" layoutX="325.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/background.jpg" />
          </image>
@@ -32,14 +32,14 @@
             <Image url="@../resources/background.jpg" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="64.0" layoutY="218.0" opacity="0.92" prefHeight="164.0" prefWidth="772.0" style="-fx-background-color: BLACK;" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="22.0" layoutY="218.0" opacity="0.92" prefHeight="164.0" prefWidth="859.0" style="-fx-background-color: BLACK;" textAlignment="CENTER">
          <font>
             <Font name="Georgia Bold" size="48.0" />
          </font>
       </Label>
-      <Label fx:id="lblHellou" alignment="CENTER" layoutX="49.0" layoutY="219.0" prefHeight="164.0" prefWidth="802.0" text="Hello to our application !" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="lblHellou" alignment="CENTER" layoutX="22.0" layoutY="219.0" prefHeight="164.0" prefWidth="859.0" text="Hello to our application !" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Georgia Bold" size="36.0" />
+            <Font name="Georgia Bold" size="30.0" />
          </font>
       </Label>
       <Accordion layoutY="7.0" />
