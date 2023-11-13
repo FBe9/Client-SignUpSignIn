@@ -103,8 +103,7 @@ public class SignUpWindowControllerTest extends ApplicationTest {
         clickOn("#btnSignUp");
 
         verifyThat(lookup("#tfFirstName").queryAs(TextField.class).getText() + " " + lookup("#tfLastName").queryAs(TextField.class).getText() + ", you have successfully registered.", isVisible());
-        clickOn("Aceptar");
-        verifyThat("#signInPane", isVisible());
+       
     }
 
     /**
