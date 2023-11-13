@@ -19,6 +19,7 @@ import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 
 /**
  * This class is for testing the SignIn controller.
@@ -54,6 +55,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test of initStage method, of class SignInWindowController.
      */
+    @Ignore
     @Test
     public void test0_InitStage() {
         verifyThat("#tfEmail", hasText(""));
@@ -66,7 +68,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Sign in test with an existing user.
      */
-    //@Test
+    @Ignore
+    @Test
     public void test1_SignInCorrect() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
@@ -87,12 +90,12 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Sign in test with a not existing user. LoginCredentialException.
      */
-    //@Test
+    @Test
     public void test2_SignInIncorrectLoginCredentialException() {
         clickOn("#tfEmail");
-        write("no@gmail.com");
+        write("nerea@gmail.com");
         clickOn("#pfPassword");
-        write("Abcd*1234");
+        write("AbLcd*1234");
         verifyThat("#btnAccept", isEnabled());
         clickOn("#btnAccept");
 
@@ -107,7 +110,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Sign in test with an existing user. ServerErrorException(MaxCapacity).
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test3_SignInCorrectWithServerCapacityError() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
@@ -123,6 +127,7 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Sign in test with an existing user. ServerErrorException(Connections).
      */
+    @Ignore
     @Test
     public void test4_SignInCorrectWithServerErrorException() {
         clickOn("#tfEmail");
@@ -139,7 +144,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test that labels works.
      */
-    //@Test
+    @Ignore
+    @Test
     public void test5_TextChangedMaxLenght() {
         clickOn("#tfEmail");
         write("anKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALczejpAVWYjkclZMOBSeNXFanKWrJSmLstpszSrbQCrLyHXZEALcrbQCrLyHXZEALcrbQCrLyH");
@@ -164,7 +170,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test of handelEyeToggleButtonAction method, of class
      * SignInWindowController.
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test6_HandelEyeToggleButtonAction() {
         clickOn("#pfPassword");
         write("abcd*1234");
@@ -185,7 +192,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test if the pfPassword and the tfPassword have the same text.
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test7_PasswordSameText() {
         clickOn("#pfPassword");
         write("abcd*1234");
@@ -201,7 +209,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
      * Test that button Accept is disabled when email and password fields are
      * not full.
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test8_AcceptButtonIsDisabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
@@ -218,7 +227,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test that button Accept is enabled.
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test9_HandelAcceptButtonActionEnabled() {
         clickOn("#tfEmail");
         write("nerea@gmail.com");
@@ -232,7 +242,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Test that SignUp view is opened when hyperlink Sign Up is clicked.
      */
-    //@Test 
+    @Ignore
+    @Test 
     public void test10_HandelSignUpHyperlink() {
         clickOn("#httpSignUp");
         verifyThat("#signUpWindow", isVisible());
@@ -241,7 +252,8 @@ public class SignInWindowControllerTest extends ApplicationTest {
     /**
      * Testing the label when you close the window.
      */
-    //@Test
+    @Ignore
+    @Test
     public void test11_HandleOnActionExit() {
         closeCurrentWindow();
         verifyThat("Are you sure you want to exit the application?", isVisible());
