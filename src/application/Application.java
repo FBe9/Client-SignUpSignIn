@@ -1,5 +1,7 @@
 package application;
 
+import factory.ClientFactory;
+import interfaces.Signable;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +34,10 @@ public class Application extends javafx.application.Application {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("view/SignInWindow.fxml"));
             Parent root = (Parent) loader.load();
             SignInWindowController controller = (SignInWindowController) loader.getController();
-
+            Signable interfaz = ClientFactory.getImplementation();
             controller.setStage(stage);
             controller.initStage(root);
+            controller.setImplementation(interfaz);
         } catch (IOException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
         }
