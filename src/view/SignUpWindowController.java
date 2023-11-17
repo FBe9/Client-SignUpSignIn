@@ -172,8 +172,9 @@ public class SignUpWindowController {
         //Llamar a la factoria
         signable = ClientFactory.getImplementation();
         //Se muestra la ventana con un show and wait.
-        stage.showAndWait();
         LOGGER.info("Window opened.");
+        stage.showAndWait();
+        
     }
 
     /**
@@ -245,6 +246,10 @@ public class SignUpWindowController {
         } else {
             lblWrongMobileMax.setVisible(false);
         }
+        
+        if(!tfMobile.getText().equals(oldValue) && tfMobile.getText().equals(newValue)){
+            lblWrongMobile.setVisible(false);
+        }
     }
 
     /**
@@ -286,6 +291,7 @@ public class SignUpWindowController {
         boolean flag = true;
         User user = null;
         try {
+            LOGGER.info("Accept. Starting user info validation.");
             // Validar que el campo de nombre (tfFirstName) y el de apellido (tfLastName) no contengan valores numéricos, si no, lanzaremos la excepción “WrongNameFormatException”.
             if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfFirstName.getText()) || !Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfLastName.getText())) {
                 throw new WrongNameFormatException("The name or last name cannot contain numbers.");
@@ -412,7 +418,7 @@ public class SignUpWindowController {
             lblWrongMobile.setText(ex.getMessage());
             //Mostramos la etiqueta de error.
             lblWrongMobile.setVisible(true);
-            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
 
         // Una vez que todas las validaciones están realizadas, carga los datos de los campos en un objeto User. 
