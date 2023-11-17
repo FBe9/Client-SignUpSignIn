@@ -9,7 +9,6 @@ import exceptions.WrongNameFormatException;
 import exceptions.WrongPasswordFormatException;
 import exceptions.WrongZipFormatException;
 import factory.ClientFactory;
-import interfaces.Signable;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,8 +98,6 @@ public class SignUpWindowController {
 
     private Stage stage;
     private static final Logger LOGGER = Logger.getLogger("package view");
-    //Interface
-    private static Signable interfaz;
     /**
      * The default maximum length permitted for the fields.
      */
@@ -418,7 +415,7 @@ public class SignUpWindowController {
 
             try {
                 //Recibir la respuesta de la implementación
-                User userResponse = interfaz.signUp(user);
+                User userResponse = ClientFactory.getImplementation().signUp(user);
 
                 if (userResponse != null) {
                     //Se muestra una alerta cuando el registro ha sido correcto.
@@ -470,8 +467,5 @@ public class SignUpWindowController {
 
         }
 
-    }
-    public void setImplementation(Signable interfaz) {
-        this.interfaz = interfaz;
     }
 }

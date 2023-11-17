@@ -77,7 +77,7 @@ public class SignInWindowController {
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
     //Interface
-    private static Signable interfaz;
+    private Signable interfaz;
 
     /**
      * Initialises the window before showing, and then shows the window.
@@ -241,28 +241,27 @@ public class SignInWindowController {
             controller.setStage(stage);
             controller.initStage(root, serverUser);
 
-        } catch (ServerErrorException se) {
+        } catch (ServerErrorException e) {
             /**
              * Si se produce un error en el servidor, se abrirá una ventana
              * emergente mostrando el mensaje de la excepción “ServerException”.
              */
-            new Alert(Alert.AlertType.ERROR, se.getMessage(), ButtonType.OK).showAndWait();
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, se);
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
             /**
              * Si el email o la contraseña no coinciden con un usuario
              * registrado, se mostrará un texto en rojo debajo del campo Email
              * con el mensaje de la excepción “LoginCredentialException”.
              */
-        } catch (LoginCredentialException l) {
-            lblError.setText(l.getMessage());
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, l);
+        } catch (LoginCredentialException e) {
+            lblError.setText(e.getMessage());
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
         } catch (WrongEmailFormatException e) {
             lblEmailError.setText(e.getMessage());
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
-        } catch (Exception ex) {
-            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
     }
 
@@ -282,7 +281,6 @@ public class SignInWindowController {
             Stage modalStage = new Stage();
             controller.setStage(modalStage);
             controller.initStage(root);
-            controller.setImplementation(interfaz);
         } catch (IOException ex) {
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
