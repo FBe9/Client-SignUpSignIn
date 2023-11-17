@@ -45,6 +45,9 @@ public class SignInWindowController {
     public SignInWindowController() {
     }
 
+    //TODO
+    private Signable signable;
+
     //Text Fields
     @FXML
     private TextField tfEmail;
@@ -91,6 +94,10 @@ public class SignInWindowController {
             Scene scene = new Scene(root);
             //Le estableces la escena al escenario
             stage.setScene(scene);
+
+            //TODO
+            signable = ClientFactory.getImplementation();
+
             //El nombre de la ventana es “Sign In”.
             stage.setTitle("SignIn");
             //Ventana no modal.
@@ -228,7 +235,7 @@ public class SignInWindowController {
              * valores email y password.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = interfaz.signIn(user);
+            User serverUser = signable.signIn(user);
 
             /**
              * Si el metodo signIn no produce excepciones, se cerrará la ventana
