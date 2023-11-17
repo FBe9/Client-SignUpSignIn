@@ -169,6 +169,7 @@ public class SignUpWindowController {
         pfConfirmPassword.textProperty().addListener(this::textPropertyChange);
         tfMobile.textProperty().addListener(this::textPropertyChange);
         tfZip.textProperty().addListener(this::textPropertyChange);
+        //Llamar a la factoria
         signable = ClientFactory.getImplementation();
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
@@ -428,7 +429,7 @@ public class SignUpWindowController {
             user.setZip(tfZip.getText());
 
             try {
-                //Recibir la respuesta de la implementación
+                //Llamar al método del signUp
                 User userResponse = signable.signUp(user);
 
                 if (userResponse != null) {
