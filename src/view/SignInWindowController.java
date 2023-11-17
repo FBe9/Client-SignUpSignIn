@@ -2,6 +2,7 @@ package view;
 
 import exceptions.*;
 import factory.ClientFactory;
+import interfaces.Signable;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -75,6 +76,8 @@ public class SignInWindowController {
     //Images
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
+    //Interface
+    private static Signable interfaz;
 
     /**
      * Initialises the window before showing, and then shows the window.
@@ -225,7 +228,7 @@ public class SignInWindowController {
              * valores email y password.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = ClientFactory.getImplementation().signIn(user);
+            User serverUser = interfaz.signIn(user);
 
             /**
              * Si el metodo signIn no produce excepciones, se cerrará la ventana
@@ -237,9 +240,6 @@ public class SignInWindowController {
             LoggedWindowController controller = (LoggedWindowController) loader.getController();
             controller.setStage(stage);
             controller.initStage(root, serverUser);
-
-        } catch (IOException ex) {
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
 
         } catch (ServerErrorException se) {
             /**
@@ -259,6 +259,8 @@ public class SignInWindowController {
         } catch (WrongEmailFormatException e) {
             lblEmailError.setText(e.getMessage());
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Exception ex) {
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -278,6 +280,7 @@ public class SignInWindowController {
             Stage modalStage = new Stage();
             controller.setStage(modalStage);
             controller.initStage(root);
+            controller.setImplementation(interfaz);
         } catch (IOException ex) {
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -313,10 +316,14 @@ public class SignInWindowController {
 
     /**
      * Sets the stage for the window.
+     *
      * @param stage The stage information for the window.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    public void setImplementation(Signable interfaz) {
+        this.interfaz = interfaz;
+    }
 }
