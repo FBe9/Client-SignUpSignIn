@@ -260,7 +260,9 @@ public class SignInWindowController {
             lblEmailError.setText(e.getMessage());
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
             Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }
 
