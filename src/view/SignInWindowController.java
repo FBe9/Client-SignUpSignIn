@@ -2,6 +2,7 @@ package view;
 
 import exceptions.*;
 import factory.ClientFactory;
+import interfaces.Signable;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -43,6 +44,9 @@ public class SignInWindowController {
      */
     public SignInWindowController() {
     }
+
+    //TODO
+    private Signable signable;
 
     //Text Fields
     @FXML
@@ -88,6 +92,10 @@ public class SignInWindowController {
             Scene scene = new Scene(root);
             //Le estableces la escena al escenario
             stage.setScene(scene);
+
+            //TODO
+            signable = ClientFactory.getImplementation();
+
             //El nombre de la ventana es “Sign In”.
             stage.setTitle("SignIn");
             //Ventana no modal.
@@ -225,7 +233,7 @@ public class SignInWindowController {
              * valores email y password.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = ClientFactory.getImplementation().signIn(user);
+            User serverUser = signable.signIn(user);
 
             /**
              * Si el metodo signIn no produce excepciones, se cerrará la ventana
@@ -313,6 +321,7 @@ public class SignInWindowController {
 
     /**
      * Sets the stage for the window.
+     *
      * @param stage The stage information for the window.
      */
     public void setStage(Stage stage) {

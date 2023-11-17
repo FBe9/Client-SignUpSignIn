@@ -113,7 +113,8 @@ public class ClientSignableImplementation implements Signable {
                     break;
                 //The user does not exist
                 case CREDENTIAL_ERROR:
-                    throw new LoginCredentialException("Unknown user, please change the login or the password.");
+                    //TODO
+                    throw new LoginCredentialException("Authentication error: check your credentials.");
                 //Something happens at the server
                 case SERVER_CAPACITY_ERROR:
                     throw new ServerErrorException("Server is at max capacity, please try again later.");
