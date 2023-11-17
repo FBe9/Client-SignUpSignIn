@@ -45,9 +45,6 @@ public class SignInWindowController {
     public SignInWindowController() {
     }
 
-    //TODO
-    private Signable signable;
-
     //Text Fields
     @FXML
     private TextField tfEmail;
@@ -80,7 +77,7 @@ public class SignInWindowController {
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
     //Interface
-    private Signable interfaz;
+    private Signable signable;
 
     /**
      * Initialises the window before showing, and then shows the window.
@@ -95,7 +92,7 @@ public class SignInWindowController {
             //Le estableces la escena al escenario
             stage.setScene(scene);
 
-            //TODO
+            //Se instancia un objeto de la interfaz "Signable" con la implementación "ClientSignableImplementation" llamando a la factoría "ClientFactory".
             signable = ClientFactory.getImplementation();
 
             //El nombre de la ventana es “Sign In”.
@@ -120,8 +117,6 @@ public class SignInWindowController {
             tfEmail.textProperty().addListener(this::textChanged);
             pfPassword.textProperty().addListener(this::textChanged);
             tfPassword.textProperty().addListener(this::textChanged);
-            //El texto del “pfPassword” se copiara en “tfPassword” y viceversa.
-            //tfPassword.textProperty().bindBidirectional(pfPassword.textProperty());
             stage.setOnCloseRequest(this::handleOnActionExit);
             btnAccept.setOnAction(this::handelAcceptButtonAction);
             tgbEye.setOnAction(this::handelEyeToggleButtonAction);
@@ -229,10 +224,8 @@ public class SignInWindowController {
                 throw new WrongEmailFormatException("Email format is not acceptable");
             }
             /**
-             * Se usará la factoría “ClientFactory” para obtener una
-             * implementación de la interfaz “Signable”, y se llamará al método
-             * “SignIn” pasándole un nuevo objeto “User” que contenga los
-             * valores email y password.
+             * Se llama al metodo de signIn de la interfaz "Signable" pasandole un user con
+             * los valores del email y la contraseña.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
             User serverUser = signable.signIn(user);
@@ -328,9 +321,5 @@ public class SignInWindowController {
      */
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    public void setImplementation(Signable interfaz) {
-        this.interfaz = interfaz;
     }
 }
