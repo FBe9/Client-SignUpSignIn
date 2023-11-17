@@ -9,6 +9,7 @@ import exceptions.WrongNameFormatException;
 import exceptions.WrongPasswordFormatException;
 import exceptions.WrongZipFormatException;
 import factory.ClientFactory;
+import interfaces.Signable;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +98,7 @@ public class SignUpWindowController {
     private Image closeEye;
 
     private Stage stage;
+    private Signable signable;
     private static final Logger LOGGER = Logger.getLogger("package view");
     /**
      * The default maximum length permitted for the fields.
@@ -166,7 +168,8 @@ public class SignUpWindowController {
         pfPasswordSignUp.textProperty().addListener(this::textPropertyChange);
         pfConfirmPassword.textProperty().addListener(this::textPropertyChange);
         tfMobile.textProperty().addListener(this::textPropertyChange);
-
+        tfZip.textProperty().addListener(this::textPropertyChange);
+        signable = ClientFactory.getImplementation();
         //Se muestra la ventana con un show and wait.
         stage.showAndWait();
         LOGGER.info("Window opened.");
@@ -191,6 +194,16 @@ public class SignUpWindowController {
     private void textPropertyChange(ObservableValue observable,
             String oldValue,
             String newValue) {
+        
+        //Ocultar la etiqueta de error asociada al campo ZIP cuando se cambie el texto del campo.
+        if(observable == tfZip.textProperty()){
+            if(lblWrongCityZip.getText().equals("City cannot contain numbers and zip must have 5 numeric numbers.")){
+                 lblWrongCityZip.setText("City cannot contain numbers.");
+            }else if (lblWrongCityZip.getText().equals("Zip must have 5 numeric numbers.")){
+                lblWrongCityZip.setText("");
+            }
+           
+        } 
         //Validar que los campos full name, email, password, confirm password están informados.
         if ((!tfFirstName.getText().trim().equals("") && !tfLastName.getText().trim().equals("") && !tfEmailSignUp.getText().trim().equals("") && !pfConfirmPassword.getText().trim().equals("")
                 && !pfPasswordSignUp.getText().trim().equals(""))) {
@@ -340,6 +353,7 @@ public class SignUpWindowController {
         }
 
         try {
+            lblWrongCityZip.setText("");
             if (!tfCity.getText().isEmpty()) {
                 if (!Pattern.matches("^[A-Za-zÁÉÍÓÚÑáéíóúñ\\s]+$", tfCity.getText())) {
                     //Si el pattern no se cumple pondremos la flag a false. Validación que nos sirve para reutilizar la label de error.
@@ -415,7 +429,7 @@ public class SignUpWindowController {
 
             try {
                 //Recibir la respuesta de la implementación
-                User userResponse = ClientFactory.getImplementation().signUp(user);
+                User userResponse = signable.signUp(user);
 
                 if (userResponse != null) {
                     //Se muestra una alerta cuando el registro ha sido correcto.
