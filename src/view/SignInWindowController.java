@@ -73,7 +73,6 @@ public class SignInWindowController {
     private Stage stage;
     //Logger
     private static final Logger LOGGER = Logger.getLogger("package view");
-    private Signable signable;
     //Images
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
@@ -119,7 +118,6 @@ public class SignInWindowController {
             tgbEye.setOnAction(this::handelEyeToggleButtonAction);
             httpSignUp.setOnAction(this::handelSignUpHyperlink);
             //Mostrar la ventana. 
-            signable = ClientFactory.getImplementation();
             stage.show();
             LOGGER.info("Showing the SignIn window.");
         } catch (Exception e) {
@@ -228,7 +226,7 @@ public class SignInWindowController {
              * valores email y password.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = signable.signIn(user);
+            User serverUser = ClientFactory.getImplementation().signIn(user);
 
             /**
              * Si el metodo signIn no produce excepciones, se cerrará la ventana
