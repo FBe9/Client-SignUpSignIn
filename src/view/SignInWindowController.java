@@ -2,6 +2,7 @@ package view;
 
 import exceptions.*;
 import factory.ClientFactory;
+import interfaces.Signable;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -75,6 +76,8 @@ public class SignInWindowController {
     //Images
     Image openEye = new Image("resources/openEye.png", 25, 26, false, true);
     Image closeEye = new Image("resources/closeEye.png", 25, 26, false, true);
+    //Interface
+    private Signable interfaz;
 
     /**
      * Initialises the window before showing, and then shows the window.
@@ -225,7 +228,7 @@ public class SignInWindowController {
              * valores email y password.
              */
             User user = new User(tfEmail.getText(), pfPassword.getText());
-            User serverUser = ClientFactory.getImplementation().signIn(user);
+            User serverUser = interfaz.signIn(user);
 
             /**
              * Si el metodo signIn no produce excepciones, se cerrará la ventana
@@ -238,27 +241,27 @@ public class SignInWindowController {
             controller.setStage(stage);
             controller.initStage(root, serverUser);
 
-        } catch (IOException ex) {
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-
-        } catch (ServerErrorException se) {
+        } catch (ServerErrorException e) {
             /**
              * Si se produce un error en el servidor, se abrirá una ventana
              * emergente mostrando el mensaje de la excepción “ServerException”.
              */
-            new Alert(Alert.AlertType.ERROR, se.getMessage(), ButtonType.OK).showAndWait();
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, se);
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
             /**
              * Si el email o la contraseña no coinciden con un usuario
              * registrado, se mostrará un texto en rojo debajo del campo Email
              * con el mensaje de la excepción “LoginCredentialException”.
              */
-        } catch (LoginCredentialException l) {
-            lblError.setText(l.getMessage());
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, l);
+        } catch (LoginCredentialException e) {
+            lblError.setText(e.getMessage());
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
         } catch (WrongEmailFormatException e) {
             lblEmailError.setText(e.getMessage());
-            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).showAndWait();
+            Logger.getLogger(SignInWindowController.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
     }
 
@@ -313,10 +316,14 @@ public class SignInWindowController {
 
     /**
      * Sets the stage for the window.
+     *
      * @param stage The stage information for the window.
      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    public void setImplementation(Signable interfaz) {
+        this.interfaz = interfaz;
+    }
 }
