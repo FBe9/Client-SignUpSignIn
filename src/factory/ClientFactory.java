@@ -24,8 +24,9 @@ public class ClientFactory {
      * @return an object that implements the interface
      */
     public static Signable getImplementation() {
-        implementation = new ClientSignableImplementation();
-        
+        if(implementation == null){
+             implementation = new ClientSignableImplementation();
+        }
         return implementation;
     }
 }
